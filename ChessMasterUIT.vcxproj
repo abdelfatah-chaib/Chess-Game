@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{6c71f452-75f4-4c20-8b75-db3b269f3ab6}</ProjectGuid>
+    <RootNamespace>ChessMasterUIT</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>C:\Users\abdel\develop\SFML-2.6.2\include;$(ProjectDir)external\sqlite\include</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Users\abdel\develop\SFML-2.6.2\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AIEngine.cpp" />
+    <ClCompile Include="AI_INTEGRATION_TEST.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BoardThemeManager.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Card.cpp" />
+    <ClCompile Include="Checkbox.cpp" />
+    <ClCompile Include="ChessBoard.cpp" />
+    <ClCompile Include="ChessMasterUIT.cpp" />
+    <ClCompile Include="ChessPiece.cpp" />
+    <ClCompile Include="CLIController.cpp" />
+    <ClCompile Include="CLIInputHandler.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="ConfirmationScreen.cpp" />
+    <ClCompile Include="CreateAccountScreen.cpp" />
+    <ClCompile Include="domainExceptions.cpp" />
+    <ClCompile Include="EmailPasswordScreen.cpp" />
+    <ClCompile Include="Evaluator.cpp" />
+    <ClCompile Include="External\sqlite\src\sqlite3.c" />
+    <ClCompile Include="FontManager.cpp" />
+    <ClCompile Include="ForgotPasswordScreen.cpp" />
+    <ClCompile Include="GameBoardScreen.cpp" />
+    <ClCompile Include="GameController.cpp" />
+    <ClCompile Include="GameEndEvaluator.cpp" />
+    <ClCompile Include="GameRepository.cpp" />
+    <ClCompile Include="GameScreen.cpp" />
+    <ClCompile Include="GameService.cpp" />
+    <ClCompile Include="GetStartedScreen.cpp" />
+    <ClCompile Include="GUIController.cpp" />
+    <ClCompile Include="HomeScreen.cpp" />
+    <ClCompile Include="InputField.cpp" />
+    <ClCompile Include="LevelSelectionScreen.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="LoginScreen.cpp" />
+    <ClCompile Include="MainMenuScreen.cpp" />
+    <ClCompile Include="Move.cpp" />
+    <ClCompile Include="MoveGenerator.cpp" />
+    <ClCompile Include="MoveValidator.cpp" />
+    <ClCompile Include="PieceAssetManager.cpp" />
+    <ClCompile Include="PieceType.cpp" />
+    <ClCompile Include="PieceType.h" />
+    <ClCompile Include="PieceView.cpp" />
+    <ClCompile Include="Position.cpp" />
+    <ClCompile Include="SaveLoadManager.cpp" />
+    <ClCompile Include="ScoreSystem.cpp" />
+    <ClCompile Include="ScreenManager.cpp" />
+    <ClCompile Include="Sidebar.cpp" />
+    <ClCompile Include="SQLiteManager.cpp" />
+    <ClCompile Include="StatisticsScreen.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="TitleScreen.cpp" />
+    <ClCompile Include="UIHelpers.cpp" />
+    <ClCompile Include="UsernameScreen.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AIEngine.h" />
+    <ClInclude Include="BoardTheme.h" />
+    <ClInclude Include="CastlingRules.h" />
+    <ClInclude Include="Checkbox.h" />
+    <ClInclude Include="CheckDetector.h" />
+    <ClInclude Include="ChessBoard.h" />
+    <ClInclude Include="ChessMasterUIT\Application.h" />
+    <ClInclude Include="ChessMasterUIT\AppState.h" />
+    <ClInclude Include="ChessMasterUIT\Button.h" />
+    <ClInclude Include="Card.h" />
+    <ClInclude Include="ChessMasterUIT\ChessPiece.h" />
+    <ClInclude Include="ChessMasterUIT\ConfirmationScreen.h" />
+    <ClInclude Include="ChessMasterUIT\CreateAccountScreen.h" />
+    <ClInclude Include="ChessMasterUIT\EmailPasswordScreen.h" />
+    <ClInclude Include="ChessMasterUIT\FontManager.h" />
+    <ClInclude Include="ChessMasterUIT\GameBoardScreen.h" />
+    <ClInclude Include="ChessMasterUIT\GameController.h" />
+    <ClInclude Include="ChessMasterUIT\GetStartedScreen.h" />
+    <ClInclude Include="ChessMasterUIT\InputField.h" />
+    <ClInclude Include="ChessMasterUIT\Logger.h" />
+    <ClInclude Include="ChessMasterUIT\MainMenuScreen.h" />
+    <ClInclude Include="ChessMasterUIT\PieceView.h" />
+    <ClInclude Include="ChessMasterUIT\ScreenManager.h" />
+    <ClInclude Include="PieceAssetManager.h" />
+    <ClInclude Include="PieceSetType.h" />
+    <ClInclude Include="Sidebar.h" />
+    <ClInclude Include="ChessMasterUIT\TitleScreen.h" />
+    <ClInclude Include="ChessMasterUIT\UIHelpers.h" />
+    <ClInclude Include="UIStyles.h" />
+    <ClInclude Include="ChessMasterUIT\UserData.h" />
+    <ClInclude Include="ChessMasterUIT\UsernameScreen.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="Evaluator.h" />
+    <ClInclude Include="ForgotPasswordScreen.h" />
+    <ClInclude Include="GameEndEvaluator.h" />
+    <ClInclude Include="GameScreen.h" />
+    <ClInclude Include="GameStateEvaluator.h" />
+    <ClInclude Include="HomeScreen.h" />
+    <ClInclude Include="LevelSelectionScreen.h" />
+    <ClInclude Include="LoginScreen.h" />
+    <ClInclude Include="Move.h" />
+    <ClInclude Include="MoveGenerator.h" />
+    <ClInclude Include="MoveValidator.h" />
+    <ClInclude Include="Position.h" />
+    <ClInclude Include="SaveLoadManager.h" />
+    <ClInclude Include="ScoreSystem.h" />
+    <ClInclude Include="Screen.h" />
+    <ClInclude Include="SQLiteManager.h" />
+    <ClInclude Include="StatisticsScreen.h" />
+    <ClInclude Include="TextureManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\ChessMasterUIT\ChessMasterUIT\player_stats.bin" />
+    <None Include=".gitignore" />
+    <None Include="README.md" />
+    <None Include="vcpkg.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\backg.jpg" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bag.jpg" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg.jpg" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bgg.jpg" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bgk.jpg" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_create.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_email.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_getstarted.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_title.jpg" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_username.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bhk.jpg" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\black_pawn.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\lock_icon.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\white_pawn.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_bishop.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_king.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_knight.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_pawn.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_queen.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_rook.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Black.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Bold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-ExtraBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Medium.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Regular.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-SemiBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Black.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-BlackItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Bold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-BoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraBoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraLight.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraLightItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Italic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Light.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-LightItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Medium.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-MediumItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Regular.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-SemiBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-SemiBoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Thin.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ThinItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Black.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-BlackItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Bold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-BoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraBoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraLight.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraLightItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Italic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Light.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-LightItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Medium.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-MediumItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Regular.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-SemiBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-SemiBoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Thin.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ThinItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Black.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-BlackItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Bold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-BoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraBoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraLight.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraLightItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Italic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Light.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-LightItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Medium.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-MediumItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Regular.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-SemiBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-SemiBoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Thin.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ThinItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Bold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-BoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraBoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraLight.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraLightItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Italic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Light.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-LightItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Medium.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-MediumItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Regular.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-SemiBold.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-SemiBoldItalic.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Thin.ttf" />
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ThinItalic.ttf" />
+    <Font Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\IrishGrover-Regular.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="ChessMasterUIT.manifest" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

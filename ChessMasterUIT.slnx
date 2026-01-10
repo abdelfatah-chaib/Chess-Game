@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="ChessMasterUIT.vcxproj" Id="6c71f452-75f4-4c20-8b75-db3b269f3ab6" />
+</Solution>

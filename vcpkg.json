@@ -1,0 +1,8 @@
+{
+  "name": "chessmaster-uit",
+  "version": "1.0.0",
+  "dependencies": [
+    "sqlite3",
+    "sfml"
+  ]
+}
