@@ -1,684 +1,406 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
+    <Filter Include="src">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-    <Filter Include="Source Files\Application">
+    <Filter Include="src\Application">
       <UniqueIdentifier>{2051a0f1-375a-485a-9ba1-f414f26c45e3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Domain">
-      <UniqueIdentifier>{f8b505a3-d4f7-47b7-8552-3e1a3c00140a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Domain\Entities">
-      <UniqueIdentifier>{af3f95f3-a9c7-4b3d-988f-334749482917}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Rules">
-      <UniqueIdentifier>{a8953a1c-bbd8-4e30-a931-69eed2de01d0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Entities">
-      <UniqueIdentifier>{ceebab17-22a3-40ed-b2a0-fdbdf9774b37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Domain\Services">
-      <UniqueIdentifier>{ffc598ab-0e95-480f-8c82-d4a34e7c61c8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Services">
-      <UniqueIdentifier>{94b70993-1fce-46ba-b921-07948e24b3c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Infrastructure">
-      <UniqueIdentifier>{12487bb3-35d6-4b28-804b-fd3ec5849d36}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Infrastructure\Persistence">
-      <UniqueIdentifier>{612bb96f-e989-44f4-ae8d-3c2aa239b5d5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Infrastructure\System">
-      <UniqueIdentifier>{c0a6bcdd-bc7c-4485-9b7a-7416802bbb0b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Resource Files\Assets">
-      <UniqueIdentifier>{e8a2a957-671d-4349-b4e3-63a8e7610d3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Application\Cli">
-      <UniqueIdentifier>{3760f96c-6da8-469e-ba06-0271f18b9a8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GUI">
-      <UniqueIdentifier>{6894d918-b32f-4341-b6d9-ddfa16bd3569}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Application\GUI">
+    <Filter Include="src\Application\GUI">
       <UniqueIdentifier>{2cebd287-777b-46ad-9b1b-8b2fd0d69173}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\fonts">
+    <Filter Include="src\Application\CLI">
+      <UniqueIdentifier>{3760f96c-6da8-469e-ba06-0271f18b9a8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Domain">
+      <UniqueIdentifier>{f8b505a3-d4f7-47b7-8552-3e1a3c00140a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Domain\Entities">
+      <UniqueIdentifier>{af3f95f3-a9c7-4b3d-988f-334749482917}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Domain\Services">
+      <UniqueIdentifier>{ffc598ab-0e95-480f-8c82-d4a34e7c61c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Infrastructure">
+      <UniqueIdentifier>{12487bb3-35d6-4b28-804b-fd3ec5849d36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Infrastructure\Persistence">
+      <UniqueIdentifier>{612bb96f-e989-44f4-ae8d-3c2aa239b5d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Infrastructure\System">
+      <UniqueIdentifier>{c0a6bcdd-bc7c-4485-9b7a-7416802bbb0b}</UniqueIdentifier>
+    </Filter>
+    
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Entities">
+      <UniqueIdentifier>{ceebab17-22a3-40ed-b2a0-fdbdf9774b37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Rules">
+      <UniqueIdentifier>{a8953a1c-bbd8-4e30-a931-69eed2de01d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Services">
+      <UniqueIdentifier>{94b70993-1fce-46ba-b921-07948e24b3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\GUI">
+      <UniqueIdentifier>{6894d918-b32f-4341-b6d9-ddfa16bd3569}</UniqueIdentifier>
+    </Filter>
+    
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Assets">
+      <UniqueIdentifier>{e8a2a957-671d-4349-b4e3-63a8e7610d3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Fonts">
       <UniqueIdentifier>{26d442e6-ed8b-4333-9249-58deea44fc4e}</UniqueIdentifier>
     </Filter>
+    
+    <Filter Include="External">
+      <UniqueIdentifier>{8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
+  
   <ItemGroup>
-    <ClCompile Include="ChessMasterUIT.cpp">
-      <Filter>Source Files</Filter>
+    <!-- Main Files -->
+    <ClCompile Include="ChessMasterUIT.cpp" />
+    <ClCompile Include="GameService.cpp" />
+    
+    <!-- Application/GUI -->
+    <ClCompile Include="src\Application\GUI\Application.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="CLIController.cpp">
-      <Filter>Source Files\Application\Cli</Filter>
+    <ClCompile Include="src\Application\GUI\Button.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="PieceType.h">
-      <Filter>Header Files\Entities</Filter>
+    <ClCompile Include="src\Application\GUI\Card.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="CLIInputHandler.cpp">
-      <Filter>Source Files\Application\Cli</Filter>
+    <ClCompile Include="src\Application\GUI\Checkbox.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GUIController.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Application\GUI\ConfirmationScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GameService.cpp">
-      <Filter>Source Files\Application</Filter>
+    <ClCompile Include="src\Application\GUI\CreateAccountScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Color.cpp">
-      <Filter>Source Files\Domain\Entities</Filter>
+    <ClCompile Include="src\Application\GUI\EmailPasswordScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Move.cpp">
-      <Filter>Source Files\Domain\Entities</Filter>
+    <ClCompile Include="src\Application\GUI\ForgotPasswordScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="PieceType.cpp">
-      <Filter>Source Files\Domain\Entities</Filter>
+    <ClCompile Include="src\Application\GUI\GetStartedScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Position.cpp">
-      <Filter>Source Files\Domain\Entities</Filter>
+    <ClCompile Include="src\Application\GUI\HomeScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="AIEngine.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Application\GUI\InputField.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Evaluator.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Application\GUI\LevelSelectionScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="MoveGenerator.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Application\GUI\LoginScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="domainExceptions.cpp">
-      <Filter>Source Files\Domain</Filter>
+    <ClCompile Include="src\Application\GUI\MainMenuScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GameRepository.cpp">
-      <Filter>Source Files\Infrastructure\Persistence</Filter>
+    <ClCompile Include="src\Application\GUI\GameScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="SaveLoadManager.cpp">
-      <Filter>Source Files\Infrastructure\Persistence</Filter>
+    <ClCompile Include="src\Application\GUI\TitleScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Logger.cpp">
-      <Filter>Source Files\Infrastructure\System</Filter>
+    <ClCompile Include="src\Application\GUI\UsernameScreen.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="LevelSelectionScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Application\GUI\PieceView.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="GameScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Application\GUI\UIHelpers.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="HomeScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Application\GUI\Sidebar.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="LoginScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Application\GUI\BoardThemeManager.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Application\GUI\PieceAssetManager.cpp">
+      <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    <ClCompile Include="Button.cpp">
-      <Filter>Source Files\Domain\Entities</Filter>
+    
+    <!-- Application/CLI -->
+    <ClCompile Include="src\Application\CLI\CLIController.cpp">
+      <Filter>src\Application\CLI</Filter>
     </ClCompile>
-    <ClCompile Include="ChessBoard.cpp">
-      <Filter>Source Files\Domain\Entities</Filter>
+    <ClCompile Include="src\Application\CLI\CLIInputHandler.cpp">
+      <Filter>src\Application\CLI</Filter>
     </ClCompile>
-    <ClCompile Include="ChessPiece.cpp">
-      <Filter>Source Files\Domain\Entities</Filter>
+    <ClCompile Include="src\Application\CLI\GUIController.cpp">
+      <Filter>src\Application\CLI</Filter>
     </ClCompile>
-    <ClCompile Include="ConfirmationScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    
+    <!-- Domain/Entities -->
+    <ClCompile Include="src\Domain\Entities\ChessBoard.cpp">
+      <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="CreateAccountScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Domain\Entities\ChessPiece.cpp">
+      <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="EmailPasswordScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Domain\Entities\Color.cpp">
+      <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="FontManager.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Domain\Entities\Move.cpp">
+      <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="GameBoardScreen.cpp">
-      <Filter>Source Files\Domain\Entities</Filter>
+    <ClCompile Include="src\Domain\Entities\Position.cpp">
+      <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="GameController.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Domain\Entities\PieceType.cpp">
+      <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="GetStartedScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Domain\Entities\PieceType.h">
+      <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="InputField.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Domain\Entities\GameBoardScreen.cpp">
+      <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="PieceView.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    
+    <!-- Domain/Services -->
+    <ClCompile Include="src\Domain\Services\AIEngine.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="ScreenManager.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Domain\Services\Evaluator.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Domain\Services\MoveGenerator.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="TitleScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Domain\Services\MoveValidator.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="UIHelpers.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Domain\Services\GameController.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="UsernameScreen.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
+    <ClCompile Include="src\Domain\Services\GameEndEvaluator.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="MoveValidator.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Domain\Services\ScoreSystem.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="GameEndEvaluator.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Domain\Services\FontManager.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreSystem.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Domain\Services\ScreenManager.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="AI_INTEGRATION_TEST.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Domain\Services\TextureManager.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    <ClCompile Include="SQLiteManager.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
+    <ClCompile Include="src\Domain\Services\SQLiteManager.cpp">
+      <Filter>src\Domain\Services</Filter>
     </ClCompile>
+    
+    <!-- Infrastructure/Persistence -->
+    <ClCompile Include="src\Infrastructure\Persistence\GameRepository.cpp">
+      <Filter>src\Infrastructure\Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Infrastructure\Persistence\SaveLoadManager.cpp">
+      <Filter>src\Infrastructure\Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Infrastructure\Persistence\StatisticsScreen.cpp">
+      <Filter>src\Infrastructure\Persistence</Filter>
+    </ClCompile>
+    
+    <!-- Infrastructure/System -->
+    <ClCompile Include="src\Infrastructure\System\Logger.cpp">
+      <Filter>src\Infrastructure\System</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Infrastructure\System\domainExceptions.cpp">
+      <Filter>src\Infrastructure\System</Filter>
+    </ClCompile>
+    
+    <!-- External -->
     <ClCompile Include="External\sqlite\src\sqlite3.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StatisticsScreen.cpp">
-      <Filter>Source Files\Infrastructure\Persistence</Filter>
-    </ClCompile>
-    <ClCompile Include="ForgotPasswordScreen.cpp">
-      <Filter>Source Files\Domain\Services</Filter>
-    </ClCompile>
-    <ClCompile Include="Checkbox.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Card.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Sidebar.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="BoardThemeManager.cpp">
-      <Filter>Source Files\Application\GUI</Filter>
-    </ClCompile>
-    <ClCompile Include="PieceAssetManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuScreen.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>External</Filter>
     </ClCompile>
   </ItemGroup>
+  
   <ItemGroup>
-    <ClInclude Include="Color.h">
-      <Filter>Header Files\Entities</Filter>
+    <!-- Entities Headers -->
+    <ClInclude Include="include\Entities\ChessBoard.h">
+      <Filter>include\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Move.h">
-      <Filter>Header Files\Entities</Filter>
+    <ClInclude Include="include\Entities\ChessPiece.h">
+      <Filter>include\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="Position.h">
-      <Filter>Header Files\Entities</Filter>
+    <ClInclude Include="include\Entities\Color.h">
+      <Filter>include\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="CastlingRules.h">
-      <Filter>Header Files\Rules</Filter>
+    <ClInclude Include="include\Entities\Move.h">
+      <Filter>include\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="CheckDetector.h">
-      <Filter>Header Files\Rules</Filter>
+    <ClInclude Include="include\Entities\Position.h">
+      <Filter>include\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="GameStateEvaluator.h">
-      <Filter>Header Files\Rules</Filter>
+    <ClInclude Include="include\Entities\PieceType.h">
+      <Filter>include\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="MoveValidator.h">
-      <Filter>Header Files\Rules</Filter>
+    <ClInclude Include="include\Entities\GameBoardScreen.h">
+      <Filter>include\Entities</Filter>
     </ClInclude>
-    <ClInclude Include="AIEngine.h">
-      <Filter>Header Files\Services</Filter>
+    
+    <!-- Rules Headers -->
+    <ClInclude Include="include\Rules\CastlingRules.h">
+      <Filter>include\Rules</Filter>
     </ClInclude>
-    <ClInclude Include="Evaluator.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\Rules\CheckDetector.h">
+      <Filter>include\Rules</Filter>
     </ClInclude>
-    <ClInclude Include="MoveGenerator.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\Rules\GameStateEvaluator.h">
+      <Filter>include\Rules</Filter>
     </ClInclude>
-    <ClInclude Include="GameScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\Rules\MoveValidator.h">
+      <Filter>include\Rules</Filter>
     </ClInclude>
-    <ClInclude Include="HomeScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    
+    <!-- Services Headers -->
+    <ClInclude Include="include\Services\AIEngine.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="LevelSelectionScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\Services\Evaluator.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="LoginScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\Services\MoveGenerator.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="Screen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\Services\GameController.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\PieceView.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\Services\GameEndEvaluator.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\Logger.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\Services\ScoreSystem.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\Application.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\Services\FontManager.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\AppState.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\Services\ScreenManager.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\Button.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\Services\TextureManager.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\ChessPiece.h">
-      <Filter>Header Files\Entities</Filter>
+    <ClInclude Include="include\Services\SQLiteManager.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\ConfirmationScreen.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\Services\SaveLoadManager.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\CreateAccountScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\Services\Logger.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\EmailPasswordScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\Services\AppState.h">
+      <Filter>include\Services</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\FontManager.h">
-      <Filter>Header Files\Services</Filter>
+    
+    <!-- GUI Headers -->
+    <ClInclude Include="include\GUI\Application.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\GameBoardScreen.h">
-      <Filter>Header Files\Entities</Filter>
+    <ClInclude Include="include\GUI\Button.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\GameController.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\GUI\Card.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\GetStartedScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\Checkbox.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\InputField.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\ConfirmationScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\MainMenuScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\CreateAccountScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\ScreenManager.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\GUI\EmailPasswordScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\TitleScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\ForgotPasswordScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\UserData.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\GUI\GetStartedScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\UIHelpers.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\HomeScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessMasterUIT\UsernameScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\InputField.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="SaveLoadManager.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\GUI\LevelSelectionScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ChessBoard.h">
-      <Filter>Header Files\Entities</Filter>
+    <ClInclude Include="include\GUI\LoginScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\GUI\MainMenuScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="GameEndEvaluator.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\GUI\GameScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreSystem.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\GUI\TitleScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="SQLiteManager.h">
-      <Filter>Header Files\Services</Filter>
+    <ClInclude Include="include\GUI\UsernameScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Card.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\PieceView.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Checkbox.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\UIHelpers.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="ForgotPasswordScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\Sidebar.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Sidebar.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\StatisticsScreen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="StatisticsScreen.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\UIStyles.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="UIStyles.h">
-      <Filter>Header Files\GUI</Filter>
+    <ClInclude Include="include\GUI\Screen.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="BoardTheme.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\GUI\UserData.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="PieceSetType.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\GUI\BoardTheme.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
-    <ClInclude Include="PieceAssetManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\GUI\PieceSetType.h">
+      <Filter>include\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GUI\PieceAssetManager.h">
+      <Filter>include\GUI</Filter>
     </ClInclude>
   </ItemGroup>
+  
   <ItemGroup>
-    <None Include="README.md" />
-    <None Include="..\..\..\..\ChessMasterUIT\ChessMasterUIT\player_stats.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="vcpkg.json" />
     <None Include=".gitignore" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\backg.jpg">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bag.jpg">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg.jpg">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_create.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_email.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_getstarted.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_title.jpg">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_username.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bgg.jpg">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bgk.jpg">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bhk.jpg">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\black_pawn.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\lock_icon.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_bishop.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_king.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_knight.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_pawn.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_queen.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_rook.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\white_pawn.png">
-      <Filter>Resource Files\Assets</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Font Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\IrishGrover-Regular.ttf">
-      <Filter>Resource Files\Assets</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-BlackItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-BoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraBoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraLightItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Italic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-LightItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-MediumItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-SemiBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-SemiBoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Black.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-BlackItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Bold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-BoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraBoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraLight.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraLightItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Italic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Light.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-LightItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Medium.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-MediumItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Regular.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-SemiBoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Black.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-BlackItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Bold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-BoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraBoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraLight.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraLightItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Italic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Light.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-LightItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Medium.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-MediumItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Regular.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-SemiBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-SemiBoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Thin.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ThinItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Black.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Bold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraLight.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Light.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Medium.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Regular.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Thin.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ThinItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-SemiBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Thin.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ThinItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Black.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Bold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-ExtraBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Medium.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Regular.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-SemiBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Bold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-BoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraBoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraLight.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraLightItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Italic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Light.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-LightItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Medium.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-MediumItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Regular.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-SemiBold.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-SemiBoldItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Thin.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ThinItalic.ttf">
-      <Filter>Resource Files\fonts</Filter>
-    </Font>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="CMakeLists.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="ChessMasterUIT.manifest" />
+    <None Include="GIT_SETUP_GUIDE.md" />
+    <None Include="README.md" />
+    <None Include="vcpkg.json" />
+    <None Include="REORGANIZATION_INSTRUCTIONS.md" />
   </ItemGroup>
 </Project>

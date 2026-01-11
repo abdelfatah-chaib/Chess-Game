@@ -116,3 +116,33 @@ Thumbs.db
 # Test files
 *_TEST.cpp
 AI_INTEGRATION_TEST.cpp
+
+# Documentation temporaire (NE PAS COMMITER)
+FINAL_SUMMARY.md
+REORGANIZATION_INSTRUCTIONS.md
+GIT_SETUP_GUIDE.md
+ARCHITECTURE.md
+
+# Fichiers de projet temporaires
+ChessMasterUIT_NEW.vcxproj
+ChessMasterUIT_NEW.vcxproj.filters
+*_OLD.vcxproj
+*_OLD.vcxproj.filters
+
+# Scripts temporaires
+fix_includes.ps1
+update_includes.ps1
+
+# Docs temporaires
+*SUMMARY*.md
+*INSTRUCTION*.md
+*GUIDE*.md
+*START*.md
+*QUICK*.md
+*FIX*.md
+*STEPS*.md
+README_SIMPLE.txt
+
+# Scripts
+*.ps1
+*.backup

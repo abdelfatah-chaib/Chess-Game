@@ -105,7 +105,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\Users\abdel\develop\SFML-2.6.2\include;$(ProjectDir)external\sqlite\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\abdel\develop\SFML-2.6.2\include;$(ProjectDir)external\sqlite\include;$(ProjectDir)include;$(ProjectDir)include\Entities;$(ProjectDir)include\Rules;$(ProjectDir)include\Services;$(ProjectDir)include\GUI</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,115 +130,133 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AIEngine.cpp" />
-    <ClCompile Include="AI_INTEGRATION_TEST.cpp" />
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="BoardThemeManager.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="Card.cpp" />
-    <ClCompile Include="Checkbox.cpp" />
-    <ClCompile Include="ChessBoard.cpp" />
+    <!-- Main entry point -->
     <ClCompile Include="ChessMasterUIT.cpp" />
-    <ClCompile Include="ChessPiece.cpp" />
-    <ClCompile Include="CLIController.cpp" />
-    <ClCompile Include="CLIInputHandler.cpp" />
-    <ClCompile Include="Color.cpp" />
-    <ClCompile Include="ConfirmationScreen.cpp" />
-    <ClCompile Include="CreateAccountScreen.cpp" />
-    <ClCompile Include="domainExceptions.cpp" />
-    <ClCompile Include="EmailPasswordScreen.cpp" />
-    <ClCompile Include="Evaluator.cpp" />
-    <ClCompile Include="External\sqlite\src\sqlite3.c" />
-    <ClCompile Include="FontManager.cpp" />
-    <ClCompile Include="ForgotPasswordScreen.cpp" />
-    <ClCompile Include="GameBoardScreen.cpp" />
-    <ClCompile Include="GameController.cpp" />
-    <ClCompile Include="GameEndEvaluator.cpp" />
-    <ClCompile Include="GameRepository.cpp" />
-    <ClCompile Include="GameScreen.cpp" />
     <ClCompile Include="GameService.cpp" />
-    <ClCompile Include="GetStartedScreen.cpp" />
-    <ClCompile Include="GUIController.cpp" />
-    <ClCompile Include="HomeScreen.cpp" />
-    <ClCompile Include="InputField.cpp" />
-    <ClCompile Include="LevelSelectionScreen.cpp" />
-    <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="LoginScreen.cpp" />
-    <ClCompile Include="MainMenuScreen.cpp" />
-    <ClCompile Include="Move.cpp" />
-    <ClCompile Include="MoveGenerator.cpp" />
-    <ClCompile Include="MoveValidator.cpp" />
-    <ClCompile Include="PieceAssetManager.cpp" />
-    <ClCompile Include="PieceType.cpp" />
-    <ClCompile Include="PieceType.h" />
-    <ClCompile Include="PieceView.cpp" />
-    <ClCompile Include="Position.cpp" />
-    <ClCompile Include="SaveLoadManager.cpp" />
-    <ClCompile Include="ScoreSystem.cpp" />
-    <ClCompile Include="ScreenManager.cpp" />
-    <ClCompile Include="Sidebar.cpp" />
-    <ClCompile Include="SQLiteManager.cpp" />
-    <ClCompile Include="StatisticsScreen.cpp" />
-    <ClCompile Include="TextureManager.cpp" />
-    <ClCompile Include="TitleScreen.cpp" />
-    <ClCompile Include="UIHelpers.cpp" />
-    <ClCompile Include="UsernameScreen.cpp" />
+    
+    <!-- Application/GUI -->
+    <ClCompile Include="src\Application\GUI\Application.cpp" />
+    <ClCompile Include="src\Application\GUI\Button.cpp" />
+    <ClCompile Include="src\Application\GUI\Card.cpp" />
+    <ClCompile Include="src\Application\GUI\Checkbox.cpp" />
+    <ClCompile Include="src\Application\GUI\ConfirmationScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\CreateAccountScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\EmailPasswordScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\ForgotPasswordScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\GetStartedScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\HomeScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\InputField.cpp" />
+    <ClCompile Include="src\Application\GUI\LevelSelectionScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\LoginScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\MainMenuScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\GameScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\TitleScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\UsernameScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\PieceView.cpp" />
+    <ClCompile Include="src\Application\GUI\UIHelpers.cpp" />
+    <ClCompile Include="src\Application\GUI\Sidebar.cpp" />
+    <ClCompile Include="src\Application\GUI\BoardThemeManager.cpp" />
+    <ClCompile Include="src\Application\GUI\PieceAssetManager.cpp" />
+    
+    <!-- Application/CLI -->
+    <ClCompile Include="src\Application\CLI\CLIController.cpp" />
+    <ClCompile Include="src\Application\CLI\CLIInputHandler.cpp" />    
+    <!-- Domain/Entities -->
+    <ClCompile Include="src\Domain\Entities\ChessBoard.cpp" />
+    <ClCompile Include="src\Domain\Entities\ChessPiece.cpp" />
+    <ClCompile Include="src\Domain\Entities\Color.cpp" />
+    <ClCompile Include="src\Domain\Entities\Move.cpp" />
+    <ClCompile Include="src\Domain\Entities\Position.cpp" />
+    <ClCompile Include="src\Domain\Entities\PieceType.cpp" />    <ClCompile Include="src\Domain\Entities\GameBoardScreen.cpp" />
+    
+    <!-- Domain/Services -->
+    <ClCompile Include="src\Domain\Services\AIEngine.cpp" />
+    <ClCompile Include="src\Domain\Services\Evaluator.cpp" />
+    <ClCompile Include="src\Domain\Services\MoveGenerator.cpp" />
+    <ClCompile Include="src\Domain\Services\MoveValidator.cpp" />
+    <ClCompile Include="src\Domain\Services\GameController.cpp" />
+    <ClCompile Include="src\Domain\Services\GameEndEvaluator.cpp" />
+    <ClCompile Include="src\Domain\Services\ScoreSystem.cpp" />
+    <ClCompile Include="src\Domain\Services\FontManager.cpp" />
+    <ClCompile Include="src\Domain\Services\ScreenManager.cpp" />
+    <ClCompile Include="src\Domain\Services\TextureManager.cpp" />
+    <ClCompile Include="src\Domain\Services\SQLiteManager.cpp" />
+    
+    <!-- Infrastructure/Persistence -->
+    <ClCompile Include="src\Infrastructure\Persistence\GameRepository.cpp" />
+    <ClCompile Include="src\Infrastructure\Persistence\SaveLoadManager.cpp" />
+    <ClCompile Include="src\Infrastructure\Persistence\StatisticsScreen.cpp" />
+    
+    <!-- Infrastructure/System -->
+    <ClCompile Include="src\Infrastructure\System\Logger.cpp" />
+    <ClCompile Include="src\Infrastructure\System\domainExceptions.cpp" />
+    
+    <!-- External -->
+    <ClCompile Include="External\sqlite\src\sqlite3.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AIEngine.h" />
-    <ClInclude Include="BoardTheme.h" />
-    <ClInclude Include="CastlingRules.h" />
-    <ClInclude Include="Checkbox.h" />
-    <ClInclude Include="CheckDetector.h" />
-    <ClInclude Include="ChessBoard.h" />
-    <ClInclude Include="ChessMasterUIT\Application.h" />
-    <ClInclude Include="ChessMasterUIT\AppState.h" />
-    <ClInclude Include="ChessMasterUIT\Button.h" />
-    <ClInclude Include="Card.h" />
-    <ClInclude Include="ChessMasterUIT\ChessPiece.h" />
-    <ClInclude Include="ChessMasterUIT\ConfirmationScreen.h" />
-    <ClInclude Include="ChessMasterUIT\CreateAccountScreen.h" />
-    <ClInclude Include="ChessMasterUIT\EmailPasswordScreen.h" />
-    <ClInclude Include="ChessMasterUIT\FontManager.h" />
-    <ClInclude Include="ChessMasterUIT\GameBoardScreen.h" />
-    <ClInclude Include="ChessMasterUIT\GameController.h" />
-    <ClInclude Include="ChessMasterUIT\GetStartedScreen.h" />
-    <ClInclude Include="ChessMasterUIT\InputField.h" />
-    <ClInclude Include="ChessMasterUIT\Logger.h" />
-    <ClInclude Include="ChessMasterUIT\MainMenuScreen.h" />
-    <ClInclude Include="ChessMasterUIT\PieceView.h" />
-    <ClInclude Include="ChessMasterUIT\ScreenManager.h" />
-    <ClInclude Include="PieceAssetManager.h" />
-    <ClInclude Include="PieceSetType.h" />
-    <ClInclude Include="Sidebar.h" />
-    <ClInclude Include="ChessMasterUIT\TitleScreen.h" />
-    <ClInclude Include="ChessMasterUIT\UIHelpers.h" />
-    <ClInclude Include="UIStyles.h" />
-    <ClInclude Include="ChessMasterUIT\UserData.h" />
-    <ClInclude Include="ChessMasterUIT\UsernameScreen.h" />
-    <ClInclude Include="Color.h" />
-    <ClInclude Include="Evaluator.h" />
-    <ClInclude Include="ForgotPasswordScreen.h" />
-    <ClInclude Include="GameEndEvaluator.h" />
-    <ClInclude Include="GameScreen.h" />
-    <ClInclude Include="GameStateEvaluator.h" />
-    <ClInclude Include="HomeScreen.h" />
-    <ClInclude Include="LevelSelectionScreen.h" />
-    <ClInclude Include="LoginScreen.h" />
-    <ClInclude Include="Move.h" />
-    <ClInclude Include="MoveGenerator.h" />
-    <ClInclude Include="MoveValidator.h" />
-    <ClInclude Include="Position.h" />
-    <ClInclude Include="SaveLoadManager.h" />
-    <ClInclude Include="ScoreSystem.h" />
-    <ClInclude Include="Screen.h" />
-    <ClInclude Include="SQLiteManager.h" />
-    <ClInclude Include="StatisticsScreen.h" />
-    <ClInclude Include="TextureManager.h" />
+    <!-- Entities Headers -->
+    <ClInclude Include="include\Entities\ChessBoard.h" />
+    <ClInclude Include="include\Entities\ChessPiece.h" />
+    <ClInclude Include="include\Entities\Color.h" />
+    <ClInclude Include="include\Entities\Move.h" />
+    <ClInclude Include="include\Entities\Position.h" />
+    <ClInclude Include="include\Entities\PieceType.h" />
+    <ClInclude Include="include\Entities\GameBoardScreen.h" />
+    
+    <!-- Rules Headers -->
+    <ClInclude Include="include\Rules\CastlingRules.h" />
+    <ClInclude Include="include\Rules\CheckDetector.h" />
+    <ClInclude Include="include\Rules\GameStateEvaluator.h" />
+    <ClInclude Include="include\Rules\MoveValidator.h" />
+    
+    <!-- Services Headers -->
+    <ClInclude Include="include\Services\AIEngine.h" />
+    <ClInclude Include="include\Services\Evaluator.h" />
+    <ClInclude Include="include\Services\MoveGenerator.h" />
+    <ClInclude Include="include\Services\GameController.h" />
+    <ClInclude Include="include\Services\GameEndEvaluator.h" />
+    <ClInclude Include="include\Services\ScoreSystem.h" />
+    <ClInclude Include="include\Services\FontManager.h" />
+    <ClInclude Include="include\Services\ScreenManager.h" />
+    <ClInclude Include="include\Services\TextureManager.h" />
+    <ClInclude Include="include\Services\SQLiteManager.h" />
+    <ClInclude Include="include\Services\SaveLoadManager.h" />
+    <ClInclude Include="include\Services\Logger.h" />
+    <ClInclude Include="include\Services\AppState.h" />
+    
+    <!-- GUI Headers -->
+    <ClInclude Include="include\GUI\Application.h" />
+    <ClInclude Include="include\GUI\Button.h" />
+    <ClInclude Include="include\GUI\Card.h" />
+    <ClInclude Include="include\GUI\Checkbox.h" />
+    <ClInclude Include="include\GUI\ConfirmationScreen.h" />
+    <ClInclude Include="include\GUI\CreateAccountScreen.h" />
+    <ClInclude Include="include\GUI\EmailPasswordScreen.h" />
+    <ClInclude Include="include\GUI\ForgotPasswordScreen.h" />
+    <ClInclude Include="include\GUI\GetStartedScreen.h" />
+    <ClInclude Include="include\GUI\HomeScreen.h" />
+    <ClInclude Include="include\GUI\InputField.h" />
+    <ClInclude Include="include\GUI\LevelSelectionScreen.h" />
+    <ClInclude Include="include\GUI\LoginScreen.h" />
+    <ClInclude Include="include\GUI\MainMenuScreen.h" />
+    <ClInclude Include="include\GUI\GameScreen.h" />
+    <ClInclude Include="include\GUI\TitleScreen.h" />
+    <ClInclude Include="include\GUI\UsernameScreen.h" />
+    <ClInclude Include="include\GUI\PieceView.h" />
+    <ClInclude Include="include\GUI\UIHelpers.h" />
+    <ClInclude Include="include\GUI\Sidebar.h" />
+    <ClInclude Include="include\GUI\StatisticsScreen.h" />
+    <ClInclude Include="include\GUI\UIStyles.h" />
+    <ClInclude Include="include\GUI\Screen.h" />
+    <ClInclude Include="include\GUI\UserData.h" />
+    <ClInclude Include="include\GUI\BoardTheme.h" />
+    <ClInclude Include="include\GUI\PieceSetType.h" />
+    <ClInclude Include="include\GUI\PieceAssetManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\ChessMasterUIT\ChessMasterUIT\player_stats.bin" />
     <None Include=".gitignore" />
+    <None Include="GIT_SETUP_GUIDE.md" />
     <None Include="README.md" />
     <None Include="vcpkg.json" />
   </ItemGroup>
