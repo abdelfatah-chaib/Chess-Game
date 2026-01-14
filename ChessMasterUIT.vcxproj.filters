@@ -31,7 +31,6 @@
     <Filter Include="src\Infrastructure\System">
       <UniqueIdentifier>{c0a6bcdd-bc7c-4485-9b7a-7416802bbb0b}</UniqueIdentifier>
     </Filter>
-    
     <Filter Include="include">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
     </Filter>
@@ -47,7 +46,6 @@
     <Filter Include="include\GUI">
       <UniqueIdentifier>{6894d918-b32f-4341-b6d9-ddfa16bd3569}</UniqueIdentifier>
     </Filter>
-    
     <Filter Include="Resources">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
     </Filter>
@@ -57,17 +55,13 @@
     <Filter Include="Resources\Fonts">
       <UniqueIdentifier>{26d442e6-ed8b-4333-9249-58deea44fc4e}</UniqueIdentifier>
     </Filter>
-    
     <Filter Include="External">
       <UniqueIdentifier>{8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  
   <ItemGroup>
     <!-- Main Files -->
     <ClCompile Include="ChessMasterUIT.cpp" />
-    <ClCompile Include="GameService.cpp" />
-    
     <!-- Application/GUI -->
     <ClCompile Include="src\Application\GUI\Application.cpp">
       <Filter>src\Application\GUI</Filter>
@@ -135,7 +129,6 @@
     <ClCompile Include="src\Application\GUI\PieceAssetManager.cpp">
       <Filter>src\Application\GUI</Filter>
     </ClCompile>
-    
     <!-- Application/CLI -->
     <ClCompile Include="src\Application\CLI\CLIController.cpp">
       <Filter>src\Application\CLI</Filter>
@@ -143,10 +136,6 @@
     <ClCompile Include="src\Application\CLI\CLIInputHandler.cpp">
       <Filter>src\Application\CLI</Filter>
     </ClCompile>
-    <ClCompile Include="src\Application\CLI\GUIController.cpp">
-      <Filter>src\Application\CLI</Filter>
-    </ClCompile>
-    
     <!-- Domain/Entities -->
     <ClCompile Include="src\Domain\Entities\ChessBoard.cpp">
       <Filter>src\Domain\Entities</Filter>
@@ -166,13 +155,9 @@
     <ClCompile Include="src\Domain\Entities\PieceType.cpp">
       <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Domain\Entities\PieceType.h">
-      <Filter>src\Domain\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="src\Domain\Entities\GameBoardScreen.cpp">
       <Filter>src\Domain\Entities</Filter>
     </ClCompile>
-    
     <!-- Domain/Services -->
     <ClCompile Include="src\Domain\Services\AIEngine.cpp">
       <Filter>src\Domain\Services</Filter>
@@ -207,7 +192,6 @@
     <ClCompile Include="src\Domain\Services\SQLiteManager.cpp">
       <Filter>src\Domain\Services</Filter>
     </ClCompile>
-    
     <!-- Infrastructure/Persistence -->
     <ClCompile Include="src\Infrastructure\Persistence\GameRepository.cpp">
       <Filter>src\Infrastructure\Persistence</Filter>
@@ -218,7 +202,6 @@
     <ClCompile Include="src\Infrastructure\Persistence\StatisticsScreen.cpp">
       <Filter>src\Infrastructure\Persistence</Filter>
     </ClCompile>
-    
     <!-- Infrastructure/System -->
     <ClCompile Include="src\Infrastructure\System\Logger.cpp">
       <Filter>src\Infrastructure\System</Filter>
@@ -226,13 +209,18 @@
     <ClCompile Include="src\Infrastructure\System\domainExceptions.cpp">
       <Filter>src\Infrastructure\System</Filter>
     </ClCompile>
-    
     <!-- External -->
     <ClCompile Include="External\sqlite\src\sqlite3.c">
       <Filter>External</Filter>
     </ClCompile>
+    <ClCompile Include="src\Application\GUI\PromotionDialog.cpp">
+      <Filter>src\Domain\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="GameService.cpp">
+      <Filter>src\Domain\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Domain\Services\ChessClock.cpp" />
   </ItemGroup>
-  
   <ItemGroup>
     <!-- Entities Headers -->
     <ClInclude Include="include\Entities\ChessBoard.h">
@@ -256,7 +244,6 @@
     <ClInclude Include="include\Entities\GameBoardScreen.h">
       <Filter>include\Entities</Filter>
     </ClInclude>
-    
     <!-- Rules Headers -->
     <ClInclude Include="include\Rules\CastlingRules.h">
       <Filter>include\Rules</Filter>
@@ -270,7 +257,6 @@
     <ClInclude Include="include\Rules\MoveValidator.h">
       <Filter>include\Rules</Filter>
     </ClInclude>
-    
     <!-- Services Headers -->
     <ClInclude Include="include\Services\AIEngine.h">
       <Filter>include\Services</Filter>
@@ -311,7 +297,6 @@
     <ClInclude Include="include\Services\AppState.h">
       <Filter>include\Services</Filter>
     </ClInclude>
-    
     <!-- GUI Headers -->
     <ClInclude Include="include\GUI\Application.h">
       <Filter>include\GUI</Filter>
@@ -394,13 +379,314 @@
     <ClInclude Include="include\GUI\PieceAssetManager.h">
       <Filter>include\GUI</Filter>
     </ClInclude>
+    <ClInclude Include="include\GUI\PromotionDialog.h" />
+    <ClInclude Include="include\Services\GameState.h" />
+    <ClInclude Include="include\Services\ChessClock.h" />
   </ItemGroup>
-  
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="GIT_SETUP_GUIDE.md" />
     <None Include="README.md" />
     <None Include="vcpkg.json" />
-    <None Include="REORGANIZATION_INSTRUCTIONS.md" />
+    <None Include="update_all_includes.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="ChessMasterUIT.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\lock_icon.png" />
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\backg.jpg">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bag.jpg">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg.jpg">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_create.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_email.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_getstarted.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_title.jpg">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bg_username.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bgg.jpg">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bgk.jpg">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\bhk.jpg">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\black_pawn.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_bishop.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_king.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_knight.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_pawn.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_queen.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\w_rook.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+    <Image Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\white_pawn.png">
+      <Filter>Resources\Assets</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Black.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Bold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-ExtraBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Medium.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-Regular.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Cinzel\static\Cinzel-SemiBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Black.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-BlackItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Bold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-BoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraBoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraLight.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ExtraLightItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Italic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Light.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-LightItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Medium.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-MediumItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Regular.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-SemiBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-SemiBoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-Thin.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_18pt-ThinItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Black.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-BlackItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Bold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-BoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraBoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraLight.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ExtraLightItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Italic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Light.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-LightItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Medium.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-MediumItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Regular.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-SemiBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-SemiBoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-Thin.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_24pt-ThinItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Black.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-BlackItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Bold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-BoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraBoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraLight.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ExtraLightItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Italic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Light.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-LightItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Medium.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-MediumItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Regular.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-SemiBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-SemiBoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-Thin.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\Inter\static\Inter_28pt-ThinItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\Chess_master\Chess_master\chessMaster\assests\IrishGrover-Regular.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Bold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-BoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraBoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraLight.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ExtraLightItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Italic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Light.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-LightItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Medium.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-MediumItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Regular.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-SemiBold.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-SemiBoldItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-Thin.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="..\..\..\..\..\..\Downloads\JetBrains_Mono\static\JetBrainsMono-ThinItalic.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
   </ItemGroup>
 </Project>

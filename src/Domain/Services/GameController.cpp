@@ -3,6 +3,7 @@
 #include "Rules/MoveValidator.h"
 #include "Services/GameEndEvaluator.h"
 #include "Services/ScoreSystem.h"
+#include "Services/ChessClock.h"  // Add chess clock include
 #include "AIEngine.h"
 #include "BoardTheme.h"
 #include <iostream>
@@ -17,7 +18,9 @@ GameController::GameController()
       scoreSystem(new ScoreSystem()),
       currentGameResult(GameResult::ONGOING),
       currentEndReason(GameEndReason::NONE),
-      aiEnabled(false), aiColor("black"), aiThinking(false), aiThinkingTimer(0.0f) {
+      aiEnabled(false), aiColor("black"), aiThinking(false), aiThinkingTimer(0.0f),
+      currentGameState(GameState::PLAYING),
+      pendingPromotionRow(-1), pendingPromotionCol(-1), pendingPromotionColor("") {
     
     // Initialiser le générateur aléatoire pour les délais IA
     srand(static_cast<unsigned int>(time(nullptr)));
@@ -53,10 +56,17 @@ void GameController::initializeBoard(float x, float y, float size) {
     // Initialize score
     updateGameScore();
     
+    // Check for king danger at start (should be none in standard position)
+    updateKingDangerStatus();
+    
     // Initialiser l'IA si nécessaire
     if (aiEnabled) {
         initializeAI();
     }
+
+    // Initialize chess clock and start white's clock
+    chessClock.reset();
+    chessClock.startWhiteClock();
 }
 
 void GameController::initializeBoard(float x, float y, float size, const ThemeColors& theme) {
@@ -85,10 +95,17 @@ void GameController::initializeBoard(float x, float y, float size, const ThemeCo
     // Initialize score
     updateGameScore();
     
+    // Check for king danger at start (should be none in standard position)
+    updateKingDangerStatus();
+    
     // Initialiser l'IA si nécessaire
     if (aiEnabled) {
         initializeAI();
     }
+
+    // Initialize chess clock and start white's clock
+    chessClock.reset();
+    chessClock.startWhiteClock();
 }
 
 void GameController::initializeBoard(float x, float y, float size, const ThemeColors& theme, PieceSetType pieceSet) {
@@ -119,10 +136,12 @@ void GameController::initializeBoard(float x, float y, float size, const ThemeCo
     // Initialize score
     updateGameScore();
     
-    // Initialiser l'IA si nécessaire
-    if (aiEnabled) {
-        initializeAI();
-    }
+    // Check for king danger at start (should be none in standard position)
+    updateKingDangerStatus();
+    
+    // Initialize chess clock and start white's clock
+    chessClock.reset();
+    chessClock.startWhiteClock();
 }
 
 void GameController::resetGame() {
@@ -143,36 +162,70 @@ void GameController::resetGame() {
     currentGameResult = GameResult::ONGOING;
     currentEndReason = GameEndReason::NONE;
     
-    // Réinitialiser GameEndEvaluator
+    // Reset game state
+    currentGameState = GameState::PLAYING;
+    pendingPromotionRow = -1;
+    pendingPromotionCol = -1;
+    pendingPromotionColor = "";
+    
+    // Reset GameEndEvaluator
     if (gameEndEvaluator) {
         gameEndEvaluator->reset();
     }
     
-    // Réinitialiser MoveValidator avec le nouveau plateau
+    // Reset MoveValidator with new board
     moveValidator = std::make_unique<MoveValidator>(&chessBoard);
     gameEndEvaluator = std::make_unique<GameEndEvaluator>(&chessBoard, moveValidator.get());
+    
+    // Clear king danger status on reset
+    chessBoard.clearKingDangerStatus();
+    
+    // Reset chess clock and start white's clock
+    chessClock.reset();
+    chessClock.startWhiteClock();
     
     updateGameScore();
     
     std::cout << "[GameController] Game reset complete - all pieces returned to starting positions" << std::endl;
     
-    // Relancer l'IA si elle joue les blancs et est enabled
+    // Restart AI if it plays white
     if (aiEnabled && aiColor == "white") {
         startAIThinking();
     }
 }
 
 void GameController::update(float deltaTime) {
-    // Update score every frame to reflect current board state
-    if (!gameEnded) {
-        updateGameScore();
+    // Update chess clock
+    if (!gameEnded && currentGameState != GameState::PAWN_PROMOTION_PENDING) {
+        chessClock.update(deltaTime);
+        
+        // Check for timeout
+        if (chessClock.isWhiteTimeOut()) {
+            std::cout << "[GameController] WHITE TIME OUT - Black wins!" << std::endl;
+            currentGameResult = GameResult::BLACK_WIN;
+            currentEndReason = GameEndReason::TIMEOUT;
+            gameEnded = true;
+            chessClock.pauseAll();
+            handleGameEnd(player2Name, player1Name);
+            return;
+        }
+        
+        if (chessClock.isBlackTimeOut()) {
+            std::cout << "[GameController] BLACK TIME OUT - White wins!" << std::endl;
+            currentGameResult = GameResult::WHITE_WIN;
+            currentEndReason = GameEndReason::TIMEOUT;
+            gameEnded = true;
+            chessClock.pauseAll();
+            handleGameEnd(player1Name, player2Name);
+            return;
+        }
     }
     
-    // Mise à jour du système IA - SEULEMENT si l'IA réfléchit déjà
+    // Update AI system - only if AI is thinking
     if (aiThinking && aiEnabled) {
         aiThinkingTimer -= deltaTime;
         if (aiThinkingTimer <= 0.0f) {
-            // L'IA a fini de réfléchir
+            // AI finished thinking
             processAIMove();
             aiThinking = false;
         }
@@ -205,6 +258,12 @@ void GameController::clearLegalMoves() {
 }
 
 bool GameController::selectPiece(int row, int col) {
+    // Ne pas permettre la sélection si promotion en attente
+    if (currentGameState == GameState::PAWN_PROMOTION_PENDING) {
+        std::cout << "[GameController] Cannot select piece - pawn promotion pending" << std::endl;
+        return false;
+    }
+    
     // Ne pas permettre la sélection pendant le tour de l'IA
     if (isAITurn() || aiThinking) {
         return false;
@@ -226,7 +285,49 @@ bool GameController::selectPiece(int row, int col) {
         }
         
         if (isLegalMove) {
-            // Exécuter le mouvement
+            // Vérifier si c'est une promotion de pion
+            if (isPawnPromotionRequired(selectedPieceRow, selectedPieceCol, row, col)) {
+                // C'est une promotion - bloquer le jeu et attendre la sélection du joueur
+                std::cout << "[GameController] Pawn promotion required at (" << row << "," << col << ")" << std::endl;
+                
+                ChessPiece* pawn = chessBoard.getPieceAt(selectedPieceRow, selectedPieceCol);
+                
+                // Exécuter le mouvement du pion (sans promotion)
+                Move moveToValidate(selectedPieceRow, selectedPieceCol, row, col);
+                const ChessPiece* targetPiece = chessBoard.getPieceAt(row, col);
+                if (targetPiece && !targetPiece->type.empty()) {
+                    moveToValidate.capturedType = targetPiece->type;
+                    moveToValidate.capturedColor = targetPiece->color;
+                }
+                
+                MoveValidator validator(&chessBoard);
+                if (validator.isMoveLegal(moveToValidate)) {
+                    // Exécuter le mouvement SANS promotion automatique
+                    // On utilise un flag temporaire pour empêcher la promotion dans movePiece
+                    if (chessBoard.movePiece(selectedPieceRow, selectedPieceCol, row, col, "")) {
+                        // Entrer dans l'état de promotion en attente
+                        currentGameState = GameState::PAWN_PROMOTION_PENDING;
+                        pendingPromotionRow = row;
+                        pendingPromotionCol = col;
+                        pendingPromotionColor = pawn->color;
+                        
+                        // PAUSE CHESS CLOCK during promotion selection
+                        chessClock.pauseAll();
+                        
+                        // NE PAS changer de tour - on attend la sélection
+                        pieceSelected = false;
+                        selectedPieceRow = -1;
+                        selectedPieceCol = -1;
+                        clearLegalMoves();
+                        
+                        std::cout << "[GameController] Entering PAWN_PROMOTION_PENDING state - clock paused" << std::endl;
+                        return true;
+                    }
+                }
+                return false;
+            }
+            
+            // Mouvement normal (pas de promotion)
             Move moveToValidate(selectedPieceRow, selectedPieceCol, row, col);
             const ChessPiece* targetPiece = chessBoard.getPieceAt(row, col);
             if (targetPiece && !targetPiece->type.empty()) {
@@ -238,19 +339,27 @@ bool GameController::selectPiece(int row, int col) {
             if (validator.isMoveLegal(moveToValidate) && 
                 chessBoard.movePiece(selectedPieceRow, selectedPieceCol, row, col)) {
                 
-                // LOG OPTIMISÉ : Mouvement réussi
+                // LOG: Successful move
                 std::cout << "[Move] " << currentPlayerColor << " moved (" 
                           << selectedPieceRow << "," << selectedPieceCol 
-                          << ") → (" << row << "," << col << ")";
-                if (!moveToValidate.capturedType.empty()) {
-                    std::cout << " [captured " << moveToValidate.capturedType << "]";
-                }
-                std::cout << std::endl;
+                          << ") → (" << row << "," << col << ")"
+                          << " [captured: " << moveToValidate.capturedType << "]"
+                          << std::endl;
                 
                 whiteTurn = !whiteTurn;
-                moveCount++;  // Increment move count
+                moveCount++;
                 
-                // Évaluer l'état de fin de partie
+                // Switch chess clock to next player
+                if (whiteTurn) {
+                    chessClock.switchToWhite();
+                } else {
+                    chessClock.switchToBlack();
+                }
+                
+                // Update king danger status for BOTH kings after each move
+                updateKingDangerStatus();
+                
+                // Evaluate game end
                 evaluateGameEnd();
 
                 pieceSelected = false;
@@ -261,80 +370,95 @@ bool GameController::selectPiece(int row, int col) {
                 // Update score after move
                 updateGameScore();
                 
-                // Démarrer l'IA si c'est son tour
+                // Start AI if it's AI's turn
                 if (aiEnabled && isAITurn() && !gamePaused && !gameEnded) {
                     startAIThinking();
                 }
                 
                 return true;
+            } else {
+                std::cout << "[Move] " << currentPlayerColor << " attempted illegal move" << std::endl;
             }
-        }
-        
-        // Sélectionner nouvelle pièce ou désélectionner
-        if (piece && !piece->type.empty() && 
-            ((whiteTurn && piece->color == "white") || (!whiteTurn && piece->color == "black"))) {
-            pieceSelected = true;
-            selectedPieceRow = row;
-            selectedPieceCol = col;
-            calculateLegalMoves(row, col);
-            return true;
         } else {
-            pieceSelected = false;
-            selectedPieceRow = -1;
-            selectedPieceCol = -1;
-            clearLegalMoves();
-            return false;
+            std::cout << "[Selection] Illegal move targeted: (" << row << "," << col << ")" << std::endl;
         }
-    }
-    
-    // Première sélection
-    if (piece && !piece->type.empty()) {
-        if ((whiteTurn && piece->color == "white") || (!whiteTurn && piece->color == "black")) {
-            pieceSelected = true;
+    } else {
+        // Sélectionner une pièce
+        if (piece && piece->color == currentPlayerColor) {
             selectedPieceRow = row;
             selectedPieceCol = col;
+            pieceSelected = true;
+            
+            // Calculer les mouvements légaux pour la pièce sélectionnée
             calculateLegalMoves(row, col);
-            return true;
+            
+            std::cout << "[Selection] " << currentPlayerColor << " selected " << piece->type 
+                      << " at (" << row << "," << col << ")" << std::endl;
+        } else {
+            std::cout << "[Selection] Invalid piece selection" << std::endl;
         }
     }
     
     return false;
 }
 
-bool GameController::movePiece(int toRow, int toCol) {
-    if (!pieceSelected || gameEnded) return false;
-    
-    Move moveToValidate(selectedPieceRow, selectedPieceCol, toRow, toCol);
-    const ChessPiece* targetPiece = chessBoard.getPieceAt(toRow, toCol);
-    if (targetPiece && !targetPiece->type.empty()) {
-        moveToValidate.capturedType = targetPiece->type;
-        moveToValidate.capturedColor = targetPiece->color;
-    }
-    
-    MoveValidator validator(&chessBoard);
-    if (!validator.isMoveLegal(moveToValidate)) {
-        return false;
-    }
-    
-    if (chessBoard.movePiece(selectedPieceRow, selectedPieceCol, toRow, toCol)) {
-        whiteTurn = !whiteTurn;
-        moveCount++;  // Increment move count
-        pieceSelected = false;
-        selectedPieceRow = -1;
-        selectedPieceCol = -1;
-        clearLegalMoves();
-        
-        // Update score after successful move
-        updateGameScore();
-        
-        // Démarrer l'IA si c'est son tour
-        if (aiEnabled && isAITurn() && !gamePaused) {
-            startAIThinking();
+bool GameController::isPawnPromotionRequired(int fromRow, int fromCol, int toRow, int toCol) const {
+    const ChessPiece* pawn = chessBoard.getPieceAt(fromRow, fromCol);
+    if (pawn && pawn->type == "pawn") {
+        if (pawn->color == "white" && toRow == 0) {
+            return true;
+        } else if (pawn->color == "black" && toRow == 7) {
+            return true;
         }
-        
-        return true;
     }
     return false;
+}
+
+void GameController::executePawnPromotion(const std::string& promotionPiece) {
+    if (currentGameState != GameState::PAWN_PROMOTION_PENDING) {
+        std::cout << "[GameController] ERROR: executePawnPromotion called but no promotion pending" << std::endl;
+        return;
+    }
+    
+    std::cout << "[GameController] Executing pawn promotion to " << promotionPiece 
+              << " at (" << pendingPromotionRow << "," << pendingPromotionCol << ")" << std::endl;
+    
+    // Promote the pawn
+    chessBoard.promotePawn(pendingPromotionRow, pendingPromotionCol, promotionPiece);
+    
+    // Switch turn NOW (after promotion is complete)
+    whiteTurn = !whiteTurn;
+    moveCount++;
+    
+    // Resume chess clock and switch to next player
+    chessClock.resumeAll();
+    if (whiteTurn) {
+        chessClock.switchToWhite();
+    } else {
+        chessClock.switchToBlack();
+    }
+    
+    // Update score after promotion
+    updateGameScore();
+    
+    // Update king danger status after promotion
+    updateKingDangerStatus();
+    
+    // Evaluate game end
+    evaluateGameEnd();
+    
+    // Clear promotion state
+    currentGameState = GameState::PLAYING;
+    pendingPromotionRow = -1;
+    pendingPromotionCol = -1;
+    pendingPromotionColor = "";
+    
+    std::cout << "[GameController] Promotion complete - game resumed, clock switched" << std::endl;
+    
+    // Start AI thinking if it's AI's turn
+    if (aiEnabled && isAITurn() && !gamePaused && !gameEnded) {
+        startAIThinking();
+    }
 }
 
 bool GameController::undoMove() {
@@ -348,138 +472,163 @@ bool GameController::undoMove() {
         aiThinking = false;
         aiThinkingTimer = 0.0f;
         
+        // Switch chess clock back to current player after undo
+        if (whiteTurn) {
+            chessClock.switchToWhite();
+        } else {
+            chessClock.switchToBlack();
+        }
+        
+        // Update king danger status after undo
+        updateKingDangerStatus();
+        
         // Update score after undo
         updateGameScore();
         
-        std::cout << "[Action] Move undone" << std::endl;
+        std::cout << "[Action] Move undone - clock switched to " 
+                  << (whiteTurn ? "white" : "black") << std::endl;
         return true;
     }
     return false;
 }
 
-bool GameController::isCurrentPlayerInCheck() const {
-    MoveValidator validator(&chessBoard);
-    std::string currentColor = whiteTurn ? "white" : "black";
-    return validator.isInCheck(currentColor);
-}
-
-bool GameController::isCurrentPlayerInCheckmate() const {
-    MoveValidator validator(&chessBoard);
-    std::string currentColor = whiteTurn ? "white" : "black";
-    return validator.isCheckmate(currentColor);
-}
-
-bool GameController::isStalemate() const {
-    MoveValidator validator(&chessBoard);
-    std::string currentColor = whiteTurn ? "white" : "black";
-    return validator.isStalemate(currentColor);
-}
-
 void GameController::pauseGame() {
     gamePaused = true;
     aiThinking = false;
+    chessClock.pauseAll();
+    std::cout << "[GameController] Game paused - clocks stopped" << std::endl;
 }
 
 void GameController::resumeGame() {
     gamePaused = false;
-}
-
-// ================================
-// AI Management Methods
-// ================================
-
-void GameController::setDifficulty(int difficulty) {
-    std::cout << "[AI] Difficulty set to level " << difficulty << std::endl;
-    selectedDifficulty = difficulty;
+    chessClock.resumeAll();
     
-    if (aiEnabled) {
-        initializeAI();
+    // Restart the clock for current player
+    if (whiteTurn) {
+        chessClock.startWhiteClock();
+    } else {
+        chessClock.startBlackClock();
     }
+    
+    std::cout << "[GameController] Game resumed - clock restarted for " 
+              << (whiteTurn ? "white" : "black") << std::endl;
 }
 
-void GameController::enableAI(bool enable, const std::string& color) {
-    std::cout << "[AI] " << (enable ? "Enabled" : "Disabled") << " - plays as " << color << std::endl;
-    aiEnabled = enable;
-    aiColor = color;
-    aiThinking = false;
-    aiThinkingTimer = 0.0f;
+void GameController::updateGameScore() {
+    if (!scoreSystem) return;
     
-    if (enable) {
-        initializeAI();
-        if (isAITurn() && !gamePaused) {
-            startAIThinking();
+    // Use the new ScoreSystem calculateCurrentScore method
+    ScoreSystem::GameScore score = scoreSystem->calculateCurrentScore(chessBoard);
+}
+
+std::string GameController::getCurrentScoreString() const {
+    if (!scoreSystem) return "White: 0, Black: 0, Diff: 0";
+    
+    ScoreSystem::GameScore score = scoreSystem->calculateCurrentScore(chessBoard);
+    return score.toString();
+}
+
+void GameController::setPlayerNames(const std::string& white, const std::string& black) {
+    player1Name = white;
+    player2Name = black;
+    std::cout << "[GameController] Player names set: " << white << " vs " << black << std::endl;
+}
+
+std::string GameController::getGameResultDescription() const {
+    if (!gameEndEvaluator) {
+        return "Game in progress";
+    }
+    return gameEndEvaluator->getResultDescription();
+}
+
+void GameController::updateKingDangerStatus() {
+    if (!moveValidator) return;
+    
+    // Update danger status for both kings
+    chessBoard.updateKingDangerStatus("white", moveValidator.get());
+    chessBoard.updateKingDangerStatus("black", moveValidator.get());
+}
+
+void GameController::evaluateGameEnd() {
+    if (gameEnded || !gameEndEvaluator) return;
+    
+    std::string currentColor = whiteTurn ? "white" : "black";
+    GameResult result = gameEndEvaluator->evaluateGameState(currentColor);
+    
+    if (result != GameResult::ONGOING) {
+        currentGameResult = result;
+        currentEndReason = gameEndEvaluator->getEndReason();
+        gameEnded = true;
+        chessClock.pauseAll();
+        
+        std::cout << "[GameController] Game ended: " << gameEndEvaluator->getResultDescription() << std::endl;
+        
+        // Determine winner and loser for score tracking
+        if (result == GameResult::WHITE_WIN) {
+            handleGameEnd(player1Name, player2Name);
+        } else if (result == GameResult::BLACK_WIN) {
+            handleGameEnd(player2Name, player1Name);
+        } else {
+            handleGameEnd("", ""); // Draw
         }
     }
 }
 
-void GameController::disableAI() {
-    enableAI(false);
+void GameController::handleGameEnd(const std::string& winnerName, const std::string& loserName) {
+    std::cout << "[GameController] Handling game end - Winner: " << winnerName << ", Loser: " << loserName << std::endl;
+    
+    // Record game result if scoreSystem exists
+    if (scoreSystem && !winnerName.empty()) {
+        recordGameResult(winnerName, loserName);
+    }
+}
+
+void GameController::recordGameResult(const std::string& winner, const std::string& loser) {
+    // This method is called by handleGameEnd to record the result
+    std::cout << "[GameController] Recording game result: " << winner << " defeated " << loser << std::endl;
+}
+
+std::string GameController::getPositionEvaluation() {
+    if (!scoreSystem) return "";
+    return scoreSystem->evaluatePosition(chessBoard);
 }
 
 bool GameController::isAITurn() const {
     if (!aiEnabled) return false;
+    
     std::string currentColor = whiteTurn ? "white" : "black";
     return (currentColor == aiColor);
 }
 
 void GameController::startAIThinking() {
-    if (!aiEnabled || aiThinking) return;
-    
-    // Délais variables selon le niveau de difficulté
-    float thinkingTime = 0.5f;  // Délai par défaut
-    
-    switch (selectedDifficulty) {
-        case 1: // Niveau facile - 4-7 secondes comme demandé
-            thinkingTime = 4.0f + (rand() % 4);  // 4-7 secondes aléatoires
-            std::cout << "[AI] " << aiColor << " (Beginner) thinking carefully for " << thinkingTime << " seconds..." << std::endl;
-            break;
-        case 2: // Niveau moyen - 2-4 secondes
-            thinkingTime = 2.0f + (rand() % 3);  // 2-4 secondes aléatoires
-            std::cout << "[AI] " << aiColor << " (Intermediate) analyzing position for " << thinkingTime << " seconds..." << std::endl;
-            break;
-        case 3: // Niveau difficile - 1-3 secondes (plus rapide car plus intelligent)
-            thinkingTime = 1.0f + (rand() % 3);  // 1-3 secondes aléatoires
-            std::cout << "[AI] " << aiColor << " (Expert) calculating best move for " << thinkingTime << " seconds..." << std::endl;
-            break;
-        default:
-            thinkingTime = 2.0f;
-            break;
+    if (!aiEnabled || !isAITurn()) {
+        return;
     }
     
     aiThinking = true;
-    aiThinkingTimer = thinkingTime;
+    aiThinkingTimer = static_cast<float>(rand() % 3 + 2); // 2-5 seconds
+    
+    std::cout << "[AI] Starting to think for " << aiThinkingTimer << " seconds..." << std::endl;
 }
 
 void GameController::processAIMove() {
     if (!aiEngine) {
-        std::cout << "[AI] ERROR: Engine not initialized!" << std::endl;
+        std::cout << "[AI] ERROR: AI engine not initialized" << std::endl;
         return;
     }
     
-    std::string currentColor = whiteTurn ? "white" : "black";
+    std::cout << "[AI] Processing move..." << std::endl;
     
-    try {
-        Move aiMove = aiEngine->chooseMove(chessBoard, currentColor);
-        
-        if (aiMove.fromRow >= 0 && aiMove.fromCol >= 0 && aiMove.toRow >= 0 && aiMove.toCol >= 0) {
-            executeAIMove(aiMove);
-        } else {
-            std::cout << "[AI] No valid move found" << std::endl;
-        }
-        
-    } catch (const std::exception& e) {
-        std::cout << "[AI] Error: " << e.what() << std::endl;
-    }
-}
-
-void GameController::initializeAI() {
-    std::cout << "[AI] Initializing engine (difficulty " << selectedDifficulty << ")" << std::endl;
-    aiEngine = createAIEngine(selectedDifficulty);
+    // Get AI move from engine using chooseMove
+    Move aiMove = aiEngine->chooseMove(chessBoard, aiColor);
     
-    if (!aiEngine) {
-        std::cout << "[AI] ERROR: Failed to create engine!" << std::endl;
-        aiEnabled = false;
+    if (aiMove.fromRow == -1) {
+        std::cout << "[AI] No valid moves available!" << std::endl;
+        return;
     }
+    
+    // Execute the AI move
+    executeAIMove(aiMove);
 }
 
 void GameController::executeAIMove(const Move& move) {
@@ -490,12 +639,23 @@ void GameController::executeAIMove(const Move& move) {
     }
     
     if (chessBoard.movePiece(move.fromRow, move.fromCol, move.toRow, move.toCol)) {
-        std::cout << "[AI] Move executed successfully" << std::endl;
+        std::cout << "[AI] Move executed successfully: (" << move.fromRow << "," << move.fromCol 
+                  << ") -> (" << move.toRow << "," << move.toCol << ")" << std::endl;
         
         whiteTurn = !whiteTurn;
-        moveCount++;  // Increment move count
+        moveCount++;
         
-        // Évaluer l'état de fin de partie
+        // Switch chess clock to next player
+        if (whiteTurn) {
+            chessClock.switchToWhite();
+        } else {
+            chessClock.switchToBlack();
+        }
+        
+        // Update king danger status for BOTH kings after AI move
+        updateKingDangerStatus();
+        
+        // Evaluate game end
         evaluateGameEnd();
         
         pieceSelected = false;
@@ -511,80 +671,61 @@ void GameController::executeAIMove(const Move& move) {
     }
 }
 
-// ================================
-// Score System Implementation
-// ================================
-
-void GameController::setPlayerNames(const std::string& white, const std::string& black) {
-    player1Name = white;
-    player2Name = black;
+void GameController::setDifficulty(int difficulty) {
+    selectedDifficulty = difficulty;
+    std::cout << "[GameController] AI difficulty set to " << difficulty << std::endl;
 }
 
-void GameController::updateGameScore() {
-    if (!scoreSystem) return;
-    // Score is calculated on demand, no need to store
-}
-
-std::string GameController::getCurrentScoreString() const {
-    if (!scoreSystem) return "Score: 0-0";
+void GameController::enableAI(bool enable, const std::string& color) {
+    aiEnabled = enable;
+    aiColor = color;
     
-    ScoreSystem::GameScore currentScore = scoreSystem->calculateCurrentScore(chessBoard);
-    return "White: " + std::to_string(currentScore.whiteScore) + 
-           ", Black: " + std::to_string(currentScore.blackScore) +
-           ", Diff: " + std::to_string(currentScore.getDifference());
-}
-
-void GameController::recordGameResult(const std::string& winner, const std::string& loser) {
-    if (!scoreSystem || winner.empty() || loser.empty()) return;
-    
-    ScoreSystem::GameScore currentScore = scoreSystem->calculateCurrentScore(chessBoard);
-    int winnerBonus = currentScore.getDifference() > 0 ? 
-                     (winner == player1Name ? currentScore.whiteScore : currentScore.blackScore) : 0;
-    int loserBonus = std::max(0, winnerBonus / 4); // Loser gets 25% of winner's score as consolation
-    
-    scoreSystem->addGameResult(winner, true, winnerBonus, loser, true);
-    scoreSystem->addGameResult(loser, false, loserBonus, winner, true);
-    
-    std::cout << "[Score] Game recorded - Winner: " << winner 
-              << " (+" << winnerBonus << "), Loser: " << loser 
-              << " (+" << loserBonus << ")" << std::endl;
-}
-
-std::string GameController::getPositionEvaluation() {
-    if (!scoreSystem) return "Evaluation unavailable";
-    return scoreSystem->evaluatePosition(chessBoard);
-}
-
-void GameController::evaluateGameEnd() {
-    if (!gameEndEvaluator) return;
-    
-    std::string currentPlayerColor = whiteTurn ? "white" : "black";
-    currentGameResult = gameEndEvaluator->evaluateGameState(currentPlayerColor);
-    currentEndReason = gameEndEvaluator->getEndReason();
-    
-    if (currentGameResult != GameResult::ONGOING) {
-        gameEnded = true;
-        std::cout << "[GAME] " << gameEndEvaluator->getResultDescription() << std::endl;
-        
-        // Enregistrer le résultat dans le système de score
-        if (currentGameResult == GameResult::WHITE_WIN) {
-            handleGameEnd(player1Name, player2Name);
-        } else if (currentGameResult == GameResult::BLACK_WIN) {
-            handleGameEnd(player2Name, player1Name);
-        } else if (currentGameResult == GameResult::DRAW) {
-            // En cas de match nul, on peut enregistrer comme draw pour les deux
-            std::cout << "[Score] Draw recorded for both players" << std::endl;
-        }
+    if (enable) {
+        std::cout << "[GameController] AI enabled for " << color << std::endl;
+        initializeAI();
+    } else {
+        std::cout << "[GameController] AI disabled" << std::endl;
+        aiEngine.reset();
     }
 }
 
-void GameController::handleGameEnd(const std::string& winnerName, const std::string& loserName) {
-    recordGameResult(winnerName, loserName);
+void GameController::disableAI() {
+    aiEnabled = false;
+    aiEngine.reset();
+    std::cout << "[GameController] AI disabled" << std::endl;
 }
 
-std::string GameController::getGameResultDescription() const {
-    if (gameEndEvaluator) {
-        return gameEndEvaluator->getResultDescription();
+void GameController::initializeAI() {
+    if (!aiEnabled) return;
+    
+    // Use the factory function to create AI engine based on difficulty
+    aiEngine = createAIEngine(selectedDifficulty);
+    std::cout << "[GameController] AI initialized with difficulty " << selectedDifficulty << std::endl;
+    
+    // If AI plays white, start thinking immediately
+    if (aiColor == "white" && whiteTurn) {
+        startAIThinking();
     }
-    return "Game in progress";
 }
+
+bool GameController::isCurrentPlayerInCheck() const {
+    if (!moveValidator) return false;
+    
+    std::string currentColor = whiteTurn ? "white" : "black";
+    return moveValidator->isInCheck(currentColor);
+}
+
+bool GameController::isCurrentPlayerInCheckmate() const {
+    if (!moveValidator) return false;
+    
+    std::string currentColor = whiteTurn ? "white" : "black";
+    return moveValidator->isCheckmate(currentColor);
+}
+
+bool GameController::isStalemate() const {
+    if (!moveValidator) return false;
+    
+    std::string currentColor = whiteTurn ? "white" : "black";
+    return moveValidator->isStalemate(currentColor);
+}
+

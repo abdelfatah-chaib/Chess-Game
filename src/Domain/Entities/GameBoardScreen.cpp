@@ -9,7 +9,8 @@
 #include <iostream>
 
 GameBoardScreen::GameBoardScreen(ScreenManager* manager, GameController* gc)
-    : Screen(manager), gameController(gc), boardInitialized(false) {
+    : Screen(manager), gameController(gc), boardInitialized(false),
+      pendingPromotionRow(-1), pendingPromotionCol(-1) {
 
     // Get selected theme from UserData AND BoardThemeManager
     BoardTheme selectedTheme = manager->getUserData().getSelectedBoardTheme();
@@ -91,6 +92,33 @@ GameBoardScreen::GameBoardScreen(ScreenManager* manager, GameController* gc)
     blackPlayerTitle.setOutlineThickness(2.f);
     blackPlayerTitle.setStyle(sf::Text::Bold);
 
+    // Chess clock panels and text - JetBrains Mono for time display
+    whiteClockPanel.setSize(sf::Vector2f(120.f, 50.f));
+    whiteClockPanel.setFillColor(sf::Color(40, 40, 60, 220));
+    whiteClockPanel.setOutlineThickness(3.f);
+    whiteClockPanel.setOutlineColor(sf::Color(100, 200, 100));
+
+    blackClockPanel.setSize(sf::Vector2f(120.f, 50.f));
+    blackClockPanel.setFillColor(sf::Color(40, 40, 60, 220));
+    blackClockPanel.setOutlineThickness(3.f);
+    blackClockPanel.setOutlineColor(sf::Color(100, 200, 100));
+
+    whiteClockText.setFont(*monoFont);
+    whiteClockText.setString("10:00");
+    whiteClockText.setCharacterSize(UIStyles::Typography::HeadingSize);
+    whiteClockText.setFillColor(sf::Color::White);
+    whiteClockText.setStyle(sf::Text::Bold);
+    whiteClockText.setOutlineColor(sf::Color::Black);
+    whiteClockText.setOutlineThickness(2.f);
+
+    blackClockText.setFont(*monoFont);
+    blackClockText.setString("10:00");
+    blackClockText.setCharacterSize(UIStyles::Typography::HeadingSize);
+    blackClockText.setFillColor(sf::Color::White);
+    blackClockText.setStyle(sf::Text::Bold);
+    blackClockText.setOutlineColor(sf::Color::Black);
+    blackClockText.setOutlineThickness(2.f);
+
     // Control buttons - Inter SemiBold
     btnRestart = Button(sf::Vector2f(0, 0), sf::Vector2f(100.f, 40.f), "Restart", *headingFont, UIStyles::Typography::CaptionSize);
     btnRestart.setFillColor(sf::Color(218, 165, 32, 255)); // Goldenrod yellow
@@ -129,11 +157,41 @@ GameBoardScreen::GameBoardScreen(ScreenManager* manager, GameController* gc)
 }
 
 void GameBoardScreen::handleEvent(const sf::Event& event, const sf::Vector2i& mousePos) {
+    // Handle promotion dialog events first (priority - blocks all other input)
+    if (promotionDialog.isVisible()) {
+        promotionDialog.handleEvent(event, mousePos);
+        promotionDialog.updateHover(mousePos);
+        return; // Block ALL other interactions while dialog is open
+    }
+    
+    // Check if promotion is pending and show dialog
+    if (gameController->isPromotionPending() && !promotionDialog.isVisible()) {
+        std::cout << "[GameBoardScreen] Promotion pending - showing dialog" << std::endl;
+        
+        // Get font from screen manager
+        const sf::Font* font = screenManager->getFontManager()->getFont(FontType::INTER_SEMIBOLD);
+        
+        // Show promotion dialog with callback
+        promotionDialog.show(
+            gameController->getPendingPromotionColor(),
+            gameController->getPendingPromotionRow(),
+            gameController->getPendingPromotionCol(),
+            [this](const std::string& promotionPiece) {
+                std::cout << "[GameBoardScreen] Player selected promotion piece: " << promotionPiece << std::endl;
+                
+                // Execute the promotion through GameController
+                gameController->executePawnPromotion(promotionPiece);
+            },
+            font
+        );
+        return; // Don't process other events this frame
+    }
+    
     if (event.type == sf::Event::MouseButtonPressed &&
         event.mouseButton.button == sf::Mouse::Left) {
 
-        // Check board click only if game is not ended
-        if (!gameController->isPaused() && !gameController->isGameEnded()) {
+        // Check board click only if game is not ended and no promotion pending
+        if (!gameController->isPaused() && !gameController->isGameEnded() && !gameController->isPromotionPending()) {
             std::pair<int, int> square = gameController->getBoard().getSquareAtPosition(
                 (float)mousePos.x, (float)mousePos.y);
             int row = square.first;
@@ -144,24 +202,26 @@ void GameBoardScreen::handleEvent(const sf::Event& event, const sf::Vector2i& mo
             }
         }
 
-        // Control buttons
-        if (btnRestart.clicked(mousePos)) {
-            std::cout << "[GameBoardScreen] Restart button clicked - restarting game" << std::endl;
-            // Reset the game state and reinitialize the board
-            gameController->resetGame();
-            boardInitialized = false; // Force board re-initialization on next update
-        }
-        else if (btnUndo.clicked(mousePos) && !gameController->isGameEnded()) {
-            std::cout << "[GameBoardScreen] Undo button clicked" << std::endl;
-            gameController->undoMove();
-        }
-        else if (btnBack.clicked(mousePos)) {
-            std::cout << "[GameBoardScreen] Menu button clicked - returning to main menu" << std::endl;
-            // Reset screen state before leaving
-            resetScreen();
-            // Pause game and return to main menu
-            gameController->pauseGame();
-            screenManager->changeState(STATE_MAIN_MENU);
+        // Control buttons (only if no promotion pending)
+        if (!gameController->isPromotionPending()) {
+            if (btnRestart.clicked(mousePos)) {
+                std::cout << "[GameBoardScreen] Restart button clicked - restarting game" << std::endl;
+                // Reset the game state WITHOUT forcing board re-initialization
+                gameController->resetGame();
+                // DON'T set boardInitialized = false - keep board in same position
+            }
+            else if (btnUndo.clicked(mousePos) && !gameController->isGameEnded()) {
+                std::cout << "[GameBoardScreen] Undo button clicked" << std::endl;
+                gameController->undoMove();
+            }
+            else if (btnBack.clicked(mousePos)) {
+                std::cout << "[GameBoardScreen] Menu button clicked - returning to main menu" << std::endl;
+                // Reset screen state before leaving
+                resetScreen();
+                // Pause game and return to main menu
+                gameController->pauseGame();
+                screenManager->changeState(STATE_MAIN_MENU);
+            }
         }
     }
 }
@@ -239,6 +299,7 @@ void GameBoardScreen::update(float deltaTime) {
     gameController->update(deltaTime);
     updateTurnIndicator();
     updateScoreDisplay();
+    updateClockDisplay();  // Update chess clock display
     updateAIStatus();
 }
 
@@ -361,6 +422,31 @@ void GameBoardScreen::draw(sf::RenderWindow& window) {
         window.draw(blackPointsText);
     }
 
+    // Chess clock displays - positioned BELOW the score panels with spacing
+    sf::Vector2f clockSize = UIHelpers::scaleSize(sf::Vector2f(120.f, 50.f), winSizeF);
+    float clockFontSize = UIHelpers::scaleFont(20.f, winSizeF);
+    float clockSpacingBelowPanel = UIHelpers::scaleFont(15.f, winSizeF);
+
+    // White clock (below white panel)
+    whiteClockPanel.setSize(clockSize);
+    sf::Vector2f whiteClockPos(whitePanelPos.x, whitePanelPos.y + scaledPanelSize.y + clockSpacingBelowPanel);
+    whiteClockPanel.setPosition(whiteClockPos);
+    window.draw(whiteClockPanel);
+
+    whiteClockText.setCharacterSize((unsigned int)clockFontSize);
+    UIHelpers::centerText(whiteClockText, whiteClockPos.x + clockSize.x / 2.f, whiteClockPos.y + clockSize.y / 2.f);
+    window.draw(whiteClockText);
+
+    // Black clock (below black panel)
+    blackClockPanel.setSize(clockSize);
+    sf::Vector2f blackClockPos(blackPanelPos.x, blackPanelPos.y + scaledPanelSize.y + clockSpacingBelowPanel);
+    blackClockPanel.setPosition(blackClockPos);
+    window.draw(blackClockPanel);
+
+    blackClockText.setCharacterSize((unsigned int)clockFontSize);
+    UIHelpers::centerText(blackClockText, blackClockPos.x + clockSize.x / 2.f, blackClockPos.y + clockSize.y / 2.f);
+    window.draw(blackClockText);
+
     // Chess board
     drawBoard(window);
 
@@ -401,25 +487,29 @@ void GameBoardScreen::draw(sf::RenderWindow& window) {
     btnUndo.draw(window);
     btnBack.draw(window);
 
-    // Turn text (scaled and centered) - Position ABOVE the board with MORE vertical space
-    // Use board bounds to position text correctly (reuse existing boardBounds variable)
-    float turnTextY = boardBounds.top - UIHelpers::scaleFont(50.f, winSizeF); // Increased from 35px to 50px above board
+    // Turn text - Position ABOVE the board with REDUCED top margin and INCREASED spacing from board
+    float turnTextY = boardBounds.top - UIHelpers::scaleFont(50.f, winSizeF);  // Increased from 30px to 50px
     
     turnText.setCharacterSize((unsigned int)UIHelpers::scaleFont(18.f, winSizeF));
     UIHelpers::centerText(turnText, winSizeF.x / 2.f, turnTextY);
     window.draw(turnText);
 
-    // AI status text (if AI is enabled) - Position below turn text
+    // AI status text (if AI is enabled) - Position below turn text with more spacing
     if (gameController->isAIEnabled()) {
-        float aiStatusY = boardBounds.top - UIHelpers::scaleFont(25.f, winSizeF); // Increased from 15px to 25px above board
+        float aiStatusY = boardBounds.top - UIHelpers::scaleFont(25.f, winSizeF);  // Increased from 10px to 25px
         aiStatusText.setCharacterSize((unsigned int)UIHelpers::scaleFont(14.f, winSizeF));
         UIHelpers::centerText(aiStatusText, winSizeF.x / 2.f, aiStatusY);
         window.draw(aiStatusText);
     }
-    
+
     // Draw game end overlay if game is finished
     if (gameController->isGameEnded()) {
         drawGameEndOverlay(window);
+    }
+    
+    // Draw promotion dialog (always on top)
+    if (promotionDialog.isVisible()) {
+        promotionDialog.draw(window);
     }
 }
 
@@ -571,8 +661,70 @@ void GameBoardScreen::updateScoreDisplay() {
     blackPointsText.setString("Score: " + std::to_string(blackScore));
 }
 
+void GameBoardScreen::updateClockDisplay() {
+    const ChessClock& chessClock = gameController->getChessClock();
+    const PlayerClock& whiteClock = chessClock.getWhiteClock();
+    const PlayerClock& blackClock = chessClock.getBlackClock();
+    
+    // Update clock text
+    whiteClockText.setString(whiteClock.getFormattedTime());
+    blackClockText.setString(blackClock.getFormattedTime());
+    
+    // Update white clock color based on time thresholds
+    if (whiteClock.isVeryLow()) {
+        // Flashing red at <= 10 seconds
+        static sf::Clock flashClock;
+        bool flash = (static_cast<int>(flashClock.getElapsedTime().asSeconds() * 2) % 2) == 0;
+        whiteClockText.setFillColor(flash ? sf::Color::Red : sf::Color(255, 100, 100));
+        whiteClockPanel.setOutlineColor(sf::Color::Red);
+        whiteClockPanel.setFillColor(sf::Color(80, 20, 20, 240));
+    } else if (whiteClock.isCritical()) {
+        // Solid red at <= 1 minute
+        whiteClockText.setFillColor(sf::Color::Red);
+        whiteClockPanel.setOutlineColor(sf::Color::Red);
+        whiteClockPanel.setFillColor(sf::Color(60, 20, 20, 240));
+    } else if (whiteClock.isWarning()) {
+        // Yellow at <= 3 minutes
+        whiteClockText.setFillColor(sf::Color::Yellow);
+        whiteClockPanel.setOutlineColor(sf::Color(255, 200, 0));
+        whiteClockPanel.setFillColor(sf::Color(60, 50, 20, 240));
+    } else {
+        // Normal white
+        whiteClockText.setFillColor(sf::Color::White);
+        whiteClockPanel.setOutlineColor(whiteClock.isRunning ? sf::Color(100, 255, 100) : sf::Color(100, 200, 100));
+        whiteClockPanel.setFillColor(whiteClock.isRunning ? sf::Color(60, 60, 80, 240) : sf::Color(40, 40, 60, 220));
+    }
+    
+    // Update black clock color based on time thresholds
+    if (blackClock.isVeryLow()) {
+        // Flashing red at <= 10 seconds
+        static sf::Clock flashClock;
+        bool flash = (static_cast<int>(flashClock.getElapsedTime().asSeconds() * 2) % 2) == 0;
+        blackClockText.setFillColor(flash ? sf::Color::Red : sf::Color(255, 100, 100));
+        blackClockPanel.setOutlineColor(sf::Color::Red);
+        blackClockPanel.setFillColor(sf::Color(80, 20, 20, 240));
+    } else if (blackClock.isCritical()) {
+        // Solid red at <= 1 minute
+        blackClockText.setFillColor(sf::Color::Red);
+        blackClockPanel.setOutlineColor(sf::Color::Red);
+        blackClockPanel.setFillColor(sf::Color(60, 20, 20, 240));
+    } else if (blackClock.isWarning()) {
+        // Yellow at <= 3 minutes
+        blackClockText.setFillColor(sf::Color::Yellow);
+        blackClockPanel.setOutlineColor(sf::Color(255, 200, 0));
+        blackClockPanel.setFillColor(sf::Color(60, 50, 20, 240));
+    } else {
+        // Normal white
+        blackClockText.setFillColor(sf::Color::White);
+        blackClockPanel.setOutlineColor(blackClock.isRunning ? sf::Color(100, 255, 100) : sf::Color(100, 200, 100));
+        blackClockPanel.setFillColor(blackClock.isRunning ? sf::Color(60, 60, 80, 240) : sf::Color(40, 40, 60, 220));
+    }
+}
+
 void GameBoardScreen::handleBoardClick(int row, int col) {
     std::cout << "[GameBoardScreen] Board clicked at row=" << row << ", col=" << col << std::endl;
+    
+    // Normal piece selection logic - GameController handles promotion detection
     bool result = gameController->selectPiece(row, col);
     std::cout << "[GameBoardScreen] selectPiece returned: " << (result ? "true" : "false") << std::endl;
 }

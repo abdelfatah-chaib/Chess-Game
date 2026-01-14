@@ -9,6 +9,16 @@
 #include "Move.h"
 #include "BoardTheme.h"
 #include "PieceSetType.h"  // Add this include
+#include <optional>  // Add for std::optional
+
+// Last move tracking structure
+struct LastMove {
+    int fromRow, fromCol;
+    int toRow, toCol;
+    
+    LastMove(int fr, int fc, int tr, int tc) 
+        : fromRow(fr), fromCol(fc), toRow(tr), toCol(tc) {}
+};
 
 class ChessBoard {
 private:
@@ -25,6 +35,13 @@ private:
     // Tracking pour les règles de fin de partie
     int halfMoveClock;  // Pour la règle des 50 coups
     std::vector<std::string> positionHistory;  // Pour la triple répétition
+    
+    // King danger tracking
+    std::pair<int, int> whiteKingDangerPos;  // Position du roi blanc en danger (-1, -1 si pas en danger)
+    std::pair<int, int> blackKingDangerPos;  // Position du roi noir en danger (-1, -1 si pas en danger)
+
+    // Last move tracking
+    std::optional<LastMove> lastMove;
 
     bool createBlackPieceFromWhite(sf::Texture& blackTexture, const std::string& whitePieceName);
     void setupPiece(int row, int col, const std::string& type, const std::string& color);
@@ -61,8 +78,12 @@ public:
     const ChessPiece* getPieceAt(int row, int col) const;
 
     bool movePiece(int fromRow, int fromCol, int toRow, int toCol);
+    bool movePiece(int fromRow, int fromCol, int toRow, int toCol, const std::string& promotionPiece);
     bool undoMove();
     bool isValidMove(int fromRow, int fromCol, int toRow, int toCol);
+    
+    // Pawn promotion
+    void promotePawn(int row, int col, const std::string& promotionPiece);
 
     sf::FloatRect getBounds() const;
     sf::Vector2f getSquarePosition(int row, int col) const;
@@ -83,4 +104,19 @@ public:
     const std::vector<std::string>& getPositionHistory() const { return positionHistory; }
     void recordCurrentPosition();
     std::string generatePositionHash() const;
+    
+    // King danger detection and visual alert
+    std::pair<int, int> getKingPosition(const std::string& color) const;
+    bool isKingInDanger(const std::string& color) const;
+    std::pair<int, int> getWhiteKingDangerPos() const { return whiteKingDangerPos; }
+    std::pair<int, int> getBlackKingDangerPos() const { return blackKingDangerPos; }
+    void updateKingDangerStatus(const std::string& color, const class MoveValidator* validator);
+    void clearKingDangerStatus();
+    void highlightKingDanger(sf::RenderWindow& window);
+
+    // Last move tracking
+    void setLastMove(int fromRow, int fromCol, int toRow, int toCol);
+    std::optional<LastMove> getLastMove() const { return lastMove; }
+    void clearLastMove() { lastMove.reset(); }
+    void drawLastMoveHighlight(sf::RenderWindow& window);
 };

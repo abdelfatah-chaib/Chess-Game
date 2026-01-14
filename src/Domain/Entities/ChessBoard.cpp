@@ -1,11 +1,15 @@
 #include "ChessBoard.h"
-#include "Move.h"
+#include "Entities/ChessPiece.h"
 #include "BoardTheme.h"
+#include "Rules/MoveValidator.h"
 #include <iostream>
-#include <string>
+#include <sstream>
+#include <cmath>
+
 using namespace std;
 
-ChessBoard::ChessBoard() : texturesLoaded(false), squareSize(50.f), boardX(50.f), boardY(50.f), halfMoveClock(0), currentPieceSet(PieceSetType::CLASSIC) {
+ChessBoard::ChessBoard() : texturesLoaded(false), squareSize(50.f), boardX(50.f), boardY(50.f), halfMoveClock(0), currentPieceSet(PieceSetType::CLASSIC),
+    whiteKingDangerPos(-1, -1), blackKingDangerPos(-1, -1) {
     for (int row = 0; row < 8; row++) {
         for (int col = 0; col < 8; col++) {
             pieces[row][col] = nullptr;
@@ -227,12 +231,21 @@ void ChessBoard::setupPiece(int row, int col, const std::string& type, const std
 }
 
 void ChessBoard::draw(sf::RenderWindow& window) {
+    // 1. Dessiner les cases de l'échiquier
     for (int row = 0; row < 8; row++) {
         for (int col = 0; col < 8; col++) {
             window.draw(boardSquares[row][col]);
         }
     }
+    
+    // 2. Dessiner le surlignage du dernier coup (vert) AVANT le danger du roi
+    drawLastMoveHighlight(window);
+    
+    // 3. Dessiner la surbrillance de danger du roi (rouge) par-dessus le coup vert
+    // Le rouge a priorité plus élevée et couvrira le vert si la case est la même
+    highlightKingDanger(window);
 
+    // 4. Dessiner les pièces par-dessus tout
     for (int row = 0; row < 8; row++) {
         for (int col = 0; col < 8; col++) {
             if (pieces[row][col] && !pieces[row][col]->type.empty()) {
@@ -406,7 +419,7 @@ bool ChessBoard::isValidMove(int fromRow, int fromCol, int toRow, int toCol) {
     return false;
 }
 
-bool ChessBoard::movePiece(int fromRow, int fromCol, int toRow, int toCol) {
+bool ChessBoard::movePiece(int fromRow, int fromCol, int toRow, int toCol, const std::string& promotionPiece) {
     std::cout << "[ChessBoard] movePiece called: (" << fromRow << "," << fromCol << ") -> (" << toRow << "," << toCol << ")" << std::endl;
     
     if (fromRow < 0 || fromRow >= 8 || fromCol < 0 || fromCol >= 8 ||
@@ -465,11 +478,35 @@ bool ChessBoard::movePiece(int fromRow, int fromCol, int toRow, int toCol) {
         boardY + toRow * squareSize + squareSize / 2
     );
     
+    // Record last move for visual highlighting
+    setLastMove(fromRow, fromCol, toRow, toCol);
+    
+    // Check for pawn promotion
+    if (isPawnMove) {
+        bool isWhite = (fromPiece->color == "white");
+        int promotionRow = isWhite ? 0 : 7;
+        
+        if (toRow == promotionRow) {
+            // Only auto-promote if a piece is explicitly specified
+            if (!promotionPiece.empty()) {
+                std::cout << "[ChessBoard] Pawn reached promotion row! Promoting to " << promotionPiece << std::endl;
+                promotePawn(toRow, toCol, promotionPiece);
+            } else {
+                std::cout << "[ChessBoard] Pawn reached promotion row - waiting for piece selection" << std::endl;
+            }
+        }
+    }
+    
     // Enregistrer la nouvelle position pour la détection de répétition
     recordCurrentPosition();
 
     std::cout << "[ChessBoard] Move completed successfully" << std::endl;
     return true;
+}
+
+// Overload for backward compatibility (automatic queen promotion for AI)
+bool ChessBoard::movePiece(int fromRow, int fromCol, int toRow, int toCol) {
+    return movePiece(fromRow, fromCol, toRow, toCol, "queen");
 }
 
 bool ChessBoard::undoMove() {
@@ -498,6 +535,9 @@ bool ChessBoard::undoMove() {
         );
     }
     
+    // Clear last move highlight on undo
+    clearLastMove();
+    
     // Retirer la dernière position de l'historique
     if (!positionHistory.empty()) {
         positionHistory.pop_back();
@@ -509,6 +549,116 @@ bool ChessBoard::undoMove() {
     }
 
     return true;
+}
+
+// ================================
+// King Danger Detection & Visual Alert System
+// ================================
+
+std::pair<int, int> ChessBoard::getKingPosition(const std::string& color) const {
+    for (int row = 0; row < 8; row++) {
+        for (int col = 0; col < 8; col++) {
+            const ChessPiece* piece = pieces[row][col];
+            if (piece && piece->type == "king" && piece->color == color) {
+                return {row, col};
+            }
+        }
+    }
+    return {-1, -1}; // King not found (should never happen in valid game)
+}
+
+bool ChessBoard::isKingInDanger(const std::string& color) const {
+    // Cette méthode délègue au MoveValidator::isInCheck
+    // Elle sera appelée depuis GameController qui a accès au validator
+    // Ici on retourne juste si la position de danger est définie
+    if (color == "white") {
+        return whiteKingDangerPos.first != -1 && whiteKingDangerPos.second != -1;
+    } else {
+        return blackKingDangerPos.first != -1 && blackKingDangerPos.second != -1;
+    }
+}
+
+void ChessBoard::updateKingDangerStatus(const std::string& color, const MoveValidator* validator) {
+    if (!validator) {
+        clearKingDangerStatus();
+        return;
+    }
+    
+    // Vérifier si le roi est en échec
+    bool inCheck = validator->isInCheck(color);
+    
+    if (inCheck) {
+        // Trouver la position du roi
+        std::pair<int, int> kingPos = getKingPosition(color);
+        
+        if (kingPos.first != -1) {
+            std::cout << "[ChessBoard] " << color << " king is IN DANGER at (" 
+                      << kingPos.first << "," << kingPos.second << ")" << std::endl;
+            
+            // Enregistrer la position de danger
+            if (color == "white") {
+                whiteKingDangerPos = kingPos;
+            } else {
+                blackKingDangerPos = kingPos;
+            }
+        }
+    } else {
+        // Le roi n'est pas en danger, effacer le statut
+        if (color == "white") {
+            whiteKingDangerPos = {-1, -1};
+        } else {
+            blackKingDangerPos = {-1, -1};
+        }
+    }
+}
+
+void ChessBoard::clearKingDangerStatus() {
+    whiteKingDangerPos = {-1, -1};
+    blackKingDangerPos = {-1, -1};
+}
+
+void ChessBoard::highlightKingDanger(sf::RenderWindow& window) {
+    // Dessiner la surbrillance rouge pour le roi blanc si en danger
+    if (whiteKingDangerPos.first != -1 && whiteKingDangerPos.second != -1) {
+        sf::RectangleShape dangerHighlight(sf::Vector2f(squareSize, squareSize));
+        dangerHighlight.setFillColor(sf::Color(255, 0, 0, 120)); // Rouge semi-transparent
+        dangerHighlight.setPosition(
+            boardX + whiteKingDangerPos.second * squareSize,
+            boardY + whiteKingDangerPos.first * squareSize
+        );
+        window.draw(dangerHighlight);
+    }
+    
+    // Dessiner la surbrillance rouge pour le roi noir si en danger
+    if (blackKingDangerPos.first != -1 && blackKingDangerPos.second != -1) {
+        sf::RectangleShape dangerHighlight(sf::Vector2f(squareSize, squareSize));
+        dangerHighlight.setFillColor(sf::Color(255, 0, 0, 120)); // Rouge semi-transparent
+        dangerHighlight.setPosition(
+            boardX + blackKingDangerPos.second * squareSize,
+            boardY + blackKingDangerPos.first * squareSize
+        );
+        window.draw(dangerHighlight);
+    }
+}
+
+void ChessBoard::promotePawn(int row, int col, const std::string& promotionPiece) {
+    ChessPiece* pawn = pieces[row][col];
+    if (!pawn || pawn->type != "pawn") {
+        std::cout << "[ChessBoard] ERROR: No pawn at position (" << row << "," << col << ") to promote" << std::endl;
+        return;
+    }
+    
+    std::string color = pawn->color;
+    std::cout << "[ChessBoard] Promoting " << color << " pawn at (" << row << "," << col << ") to " << promotionPiece << std::endl;
+    
+    // Delete the pawn
+    delete pawn;
+    pieces[row][col] = nullptr;
+    
+    // Create the new promoted piece
+    setupPiece(row, col, promotionPiece, color);
+    
+    std::cout << "[ChessBoard] Pawn promotion complete" << std::endl;
 }
 
 sf::FloatRect ChessBoard::getBounds() const {
@@ -604,6 +754,9 @@ void ChessBoard::reset() {
     while (!moveHistory.empty()) {
         moveHistory.pop();
     }
+    
+    // Clear last move highlight on reset
+    clearLastMove();
     
     // Reset game end tracking
     halfMoveClock = 0;
@@ -728,4 +881,45 @@ void ChessBoard::setPieceSet(PieceSetType pieceSet, BoardTheme theme) {
             }
         }
     }
+}
+
+// ================================
+// Last Move Tracking & Highlighting
+// ================================
+
+void ChessBoard::setLastMove(int fromRow, int fromCol, int toRow, int toCol) {
+    lastMove = LastMove(fromRow, fromCol, toRow, toCol);
+    std::cout << "[ChessBoard] Last move set: (" << fromRow << "," << fromCol 
+              << ") -> (" << toRow << "," << toCol << ")" << std::endl;
+}
+
+void ChessBoard::drawLastMoveHighlight(sf::RenderWindow& window) {
+    if (!lastMove.has_value()) {
+        return;
+    }
+    
+    const LastMove& move = lastMove.value();
+    
+    // Green semi-transparent highlight (as specified: sf::Color(0, 200, 0, 120))
+    sf::Color greenHighlight(0, 200, 0, 120);
+    
+    // Highlight FROM square
+    sf::RectangleShape fromHighlight(sf::Vector2f(squareSize, squareSize));
+    fromHighlight.setFillColor(greenHighlight);
+    fromHighlight.setPosition(
+        boardX + move.fromCol * squareSize,
+        boardY + move.fromRow * squareSize
+    );
+    
+    // Highlight TO square
+    sf::RectangleShape toHighlight(sf::Vector2f(squareSize, squareSize));
+    toHighlight.setFillColor(greenHighlight);
+    toHighlight.setPosition(
+        boardX + move.toCol * squareSize,
+        boardY + move.toRow * squareSize
+    );
+    
+    // Draw both highlights
+    window.draw(fromHighlight);
+    window.draw(toHighlight);
 }

@@ -4,6 +4,8 @@
 #include "MoveValidator.h"
 #include "GameEndEvaluator.h"
 #include "PieceSetType.h"
+#include "GameState.h"
+#include "ChessClock.h"  // Add chess clock
 #include <string>
 #include <vector>
 #include <utility>
@@ -28,6 +30,12 @@ private:
     std::string selectedColor;
     int selectedDifficulty;
     
+    // Game State Management
+    GameState currentGameState;
+    int pendingPromotionRow;
+    int pendingPromotionCol;
+    std::string pendingPromotionColor;
+    
     // Score System Integration
     ScoreSystem* scoreSystem;
     std::string player1Name;
@@ -49,6 +57,9 @@ private:
     std::string aiColor;  // Couleur de l'IA ("white" ou "black")
     bool aiThinking;      // Flagpour indiquer que l'IA réfléchit
     float aiThinkingTimer; // Timer pour simuler le temps de réflexion
+    
+    // Chess Clock System
+    ChessClock chessClock;
 
 public:
     GameController();
@@ -93,6 +104,13 @@ public:
     const std::string& getAIColor() const { return aiColor; }
     float getAIThinkingTimeRemaining() const { return aiThinkingTimer; }
     
+    // Game State Getters
+    GameState getGameState() const { return currentGameState; }
+    bool isPromotionPending() const { return currentGameState == GameState::PAWN_PROMOTION_PENDING; }
+    int getPendingPromotionRow() const { return pendingPromotionRow; }
+    int getPendingPromotionCol() const { return pendingPromotionCol; }
+    const std::string& getPendingPromotionColor() const { return pendingPromotionColor; }
+    
     // Game End Status Getters
     bool isGameEnded() const { return gameEnded; }
     GameResult getGameResult() const { return currentGameResult; }
@@ -109,6 +127,17 @@ public:
     std::string getCurrentScoreString() const;
     void recordGameResult(const std::string& winner, const std::string& loser);
     std::string getPositionEvaluation();
+    
+    // Pawn Promotion Methods
+    void executePawnPromotion(const std::string& promotionPiece);
+    bool isPawnPromotionRequired(int fromRow, int fromCol, int toRow, int toCol) const;
+    
+    // King danger tracking
+    void updateKingDangerStatus();
+
+    // Chess Clock methods
+    ChessClock& getChessClock() { return chessClock; }
+    const ChessClock& getChessClock() const { return chessClock; }
 
 private:
     void calculateLegalMoves(int row, int col);

@@ -3,6 +3,7 @@
 #include "Button.h"
 #include "GameController.h"
 #include "BoardTheme.h"
+#include "GUI/PromotionDialog.h"
 #include <SFML/Graphics.hpp>
 
 class GameBoardScreen : public Screen {
@@ -25,6 +26,12 @@ private:
     sf::Text whitePlayerTitle;
     sf::Text blackPlayerTitle;
     
+    // Chess clock UI
+    sf::RectangleShape whiteClockPanel;
+    sf::RectangleShape blackClockPanel;
+    sf::Text whiteClockText;
+    sf::Text blackClockText;
+    
     // Control buttons
     Button btnRestart;
     Button btnUndo;
@@ -39,6 +46,11 @@ private:
     // Game end display
     sf::Text gameEndText;
     sf::RectangleShape gameEndOverlay;
+    
+    // Promotion dialog
+    PromotionDialog promotionDialog;
+    int pendingPromotionRow;
+    int pendingPromotionCol;
     
     // Board initialized flag
     bool boardInitialized;
@@ -63,4 +75,5 @@ private:
     void drawGameEndOverlay(sf::RenderWindow& window);
     void saveGameToDatabase();
     void resetScreen();  // Reset screen state when returning from menu
+    void updateClockDisplay();  // New method to update clock UI
 };

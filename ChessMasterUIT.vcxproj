@@ -133,7 +133,6 @@
     <!-- Main entry point -->
     <ClCompile Include="ChessMasterUIT.cpp" />
     <ClCompile Include="GameService.cpp" />
-    
     <!-- Application/GUI -->
     <ClCompile Include="src\Application\GUI\Application.cpp" />
     <ClCompile Include="src\Application\GUI\Button.cpp" />
@@ -150,6 +149,7 @@
     <ClCompile Include="src\Application\GUI\LoginScreen.cpp" />
     <ClCompile Include="src\Application\GUI\MainMenuScreen.cpp" />
     <ClCompile Include="src\Application\GUI\GameScreen.cpp" />
+    <ClCompile Include="src\Application\GUI\PromotionDialog.cpp" />
     <ClCompile Include="src\Application\GUI\TitleScreen.cpp" />
     <ClCompile Include="src\Application\GUI\UsernameScreen.cpp" />
     <ClCompile Include="src\Application\GUI\PieceView.cpp" />
@@ -157,20 +157,20 @@
     <ClCompile Include="src\Application\GUI\Sidebar.cpp" />
     <ClCompile Include="src\Application\GUI\BoardThemeManager.cpp" />
     <ClCompile Include="src\Application\GUI\PieceAssetManager.cpp" />
-    
     <!-- Application/CLI -->
     <ClCompile Include="src\Application\CLI\CLIController.cpp" />
-    <ClCompile Include="src\Application\CLI\CLIInputHandler.cpp" />    
+    <ClCompile Include="src\Application\CLI\CLIInputHandler.cpp" />
     <!-- Domain/Entities -->
     <ClCompile Include="src\Domain\Entities\ChessBoard.cpp" />
     <ClCompile Include="src\Domain\Entities\ChessPiece.cpp" />
     <ClCompile Include="src\Domain\Entities\Color.cpp" />
     <ClCompile Include="src\Domain\Entities\Move.cpp" />
     <ClCompile Include="src\Domain\Entities\Position.cpp" />
-    <ClCompile Include="src\Domain\Entities\PieceType.cpp" />    <ClCompile Include="src\Domain\Entities\GameBoardScreen.cpp" />
-    
+    <ClCompile Include="src\Domain\Entities\PieceType.cpp" />
+    <ClCompile Include="src\Domain\Entities\GameBoardScreen.cpp" />
     <!-- Domain/Services -->
     <ClCompile Include="src\Domain\Services\AIEngine.cpp" />
+    <ClCompile Include="src\Domain\Services\ChessClock.cpp" />
     <ClCompile Include="src\Domain\Services\Evaluator.cpp" />
     <ClCompile Include="src\Domain\Services\MoveGenerator.cpp" />
     <ClCompile Include="src\Domain\Services\MoveValidator.cpp" />
@@ -181,16 +181,13 @@
     <ClCompile Include="src\Domain\Services\ScreenManager.cpp" />
     <ClCompile Include="src\Domain\Services\TextureManager.cpp" />
     <ClCompile Include="src\Domain\Services\SQLiteManager.cpp" />
-    
     <!-- Infrastructure/Persistence -->
     <ClCompile Include="src\Infrastructure\Persistence\GameRepository.cpp" />
     <ClCompile Include="src\Infrastructure\Persistence\SaveLoadManager.cpp" />
     <ClCompile Include="src\Infrastructure\Persistence\StatisticsScreen.cpp" />
-    
     <!-- Infrastructure/System -->
     <ClCompile Include="src\Infrastructure\System\Logger.cpp" />
     <ClCompile Include="src\Infrastructure\System\domainExceptions.cpp" />
-    
     <!-- External -->
     <ClCompile Include="External\sqlite\src\sqlite3.c" />
   </ItemGroup>
@@ -203,16 +200,17 @@
     <ClInclude Include="include\Entities\Position.h" />
     <ClInclude Include="include\Entities\PieceType.h" />
     <ClInclude Include="include\Entities\GameBoardScreen.h" />
-    
     <!-- Rules Headers -->
+    <ClInclude Include="include\GUI\PromotionDialog.h" />
     <ClInclude Include="include\Rules\CastlingRules.h" />
     <ClInclude Include="include\Rules\CheckDetector.h" />
     <ClInclude Include="include\Rules\GameStateEvaluator.h" />
     <ClInclude Include="include\Rules\MoveValidator.h" />
-    
     <!-- Services Headers -->
     <ClInclude Include="include\Services\AIEngine.h" />
+    <ClInclude Include="include\Services\ChessClock.h" />
     <ClInclude Include="include\Services\Evaluator.h" />
+    <ClInclude Include="include\Services\GameState.h" />
     <ClInclude Include="include\Services\MoveGenerator.h" />
     <ClInclude Include="include\Services\GameController.h" />
     <ClInclude Include="include\Services\GameEndEvaluator.h" />
@@ -224,7 +222,6 @@
     <ClInclude Include="include\Services\SaveLoadManager.h" />
     <ClInclude Include="include\Services\Logger.h" />
     <ClInclude Include="include\Services\AppState.h" />
-    
     <!-- GUI Headers -->
     <ClInclude Include="include\GUI\Application.h" />
     <ClInclude Include="include\GUI\Button.h" />
@@ -258,6 +255,7 @@
     <None Include=".gitignore" />
     <None Include="GIT_SETUP_GUIDE.md" />
     <None Include="README.md" />
+    <None Include="update_all_includes.ps1" />
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
