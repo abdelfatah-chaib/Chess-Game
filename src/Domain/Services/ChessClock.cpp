@@ -1,4 +1,5 @@
 #include "Services/ChessClock.h"
+#include "Services/SoundManager.h"
 #include <sstream>
 #include <iomanip>
 #include <iostream>
@@ -69,6 +70,11 @@ void ChessClock::reset() {
 }
 
 void ChessClock::update(float deltaTime) {
+    // Call the overloaded version without sound manager
+    update(deltaTime, nullptr);
+}
+
+void ChessClock::update(float deltaTime, SoundManager* soundManager) {
     // Only update if not paused
     if (isPaused) {
         return;
@@ -77,6 +83,13 @@ void ChessClock::update(float deltaTime) {
     // Update white clock if running
     if (whiteClock.isRunning && !whiteClock.isTimeOut()) {
         whiteClock.remainingSeconds -= deltaTime;
+        
+        // Check for time warning trigger (below 60 seconds)
+        if (soundManager && !whiteClock.timeWarningPlayed && whiteClock.remainingSeconds < 60.0f) {
+            std::cout << "[ChessClock] WHITE time warning triggered at " << whiteClock.getFormattedTime() << std::endl;
+            soundManager->playTimeWarning();
+            whiteClock.timeWarningPlayed = true;
+        }
         
         // Log timeout
         if (whiteClock.remainingSeconds <= 0.0f) {
@@ -89,6 +102,13 @@ void ChessClock::update(float deltaTime) {
     // Update black clock if running
     if (blackClock.isRunning && !blackClock.isTimeOut()) {
         blackClock.remainingSeconds -= deltaTime;
+        
+        // Check for time warning trigger (below 60 seconds)
+        if (soundManager && !blackClock.timeWarningPlayed && blackClock.remainingSeconds < 60.0f) {
+            std::cout << "[ChessClock] BLACK time warning triggered at " << blackClock.getFormattedTime() << std::endl;
+            soundManager->playTimeWarning();
+            blackClock.timeWarningPlayed = true;
+        }
         
         // Log timeout
         if (blackClock.remainingSeconds <= 0.0f) {

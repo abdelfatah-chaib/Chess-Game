@@ -125,14 +125,14 @@ void StatisticsScreen::draw(sf::RenderWindow& window) {
                           statsBox.getPosition().y + UIHelpers::scaleFont(20.f, winSizeF));
     window.draw(statsText);
 
-    // Draw history title
+    // Draw history title - INCREASED spacing to avoid overlap
     historyTitle.setCharacterSize(static_cast<unsigned int>(UIHelpers::scaleFont(32.f, winSizeF)));
-    UIHelpers::centerText(historyTitle, winSizeF.x / 2.f, UIHelpers::scaleFont(370.f, winSizeF));
+    UIHelpers::centerText(historyTitle, winSizeF.x / 2.f, UIHelpers::scaleFont(400.f, winSizeF));  // Changed from 370 to 400
     window.draw(historyTitle);
 
-    // Draw history box
+    // Draw history box - INCREASED spacing
     sf::RectangleShape historyBox(UIHelpers::scaleSize(sf::Vector2f(800.f, 250.f), winSizeF));
-    historyBox.setPosition((winSizeF.x - historyBox.getSize().x) / 2.f, UIHelpers::scaleFont(420.f, winSizeF));
+    historyBox.setPosition((winSizeF.x - historyBox.getSize().x) / 2.f, UIHelpers::scaleFont(450.f, winSizeF));  // Changed from 420 to 450
     historyBox.setFillColor(sf::Color(40, 40, 60, 220));
     historyBox.setOutlineThickness(3.f);
     historyBox.setOutlineColor(sf::Color(100, 150, 255));

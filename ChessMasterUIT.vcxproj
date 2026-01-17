@@ -111,7 +111,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\Users\abdel\develop\SFML-2.6.2\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;</AdditionalDependencies>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;sfml-audio-d.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -179,6 +179,7 @@
     <ClCompile Include="src\Domain\Services\ScoreSystem.cpp" />
     <ClCompile Include="src\Domain\Services\FontManager.cpp" />
     <ClCompile Include="src\Domain\Services\ScreenManager.cpp" />
+    <ClCompile Include="src\Domain\Services\SoundManager.cpp" />
     <ClCompile Include="src\Domain\Services\TextureManager.cpp" />
     <ClCompile Include="src\Domain\Services\SQLiteManager.cpp" />
     <!-- Infrastructure/Persistence -->
@@ -217,6 +218,7 @@
     <ClInclude Include="include\Services\ScoreSystem.h" />
     <ClInclude Include="include\Services\FontManager.h" />
     <ClInclude Include="include\Services\ScreenManager.h" />
+    <ClInclude Include="include\Services\SoundManager.h" />
     <ClInclude Include="include\Services\TextureManager.h" />
     <ClInclude Include="include\Services\SQLiteManager.h" />
     <ClInclude Include="include\Services\SaveLoadManager.h" />
@@ -361,6 +363,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+    <Text Include="COMMIT_MESSAGE.txt" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="ChessMasterUIT.manifest" />

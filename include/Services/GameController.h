@@ -6,6 +6,7 @@
 #include "PieceSetType.h"
 #include "GameState.h"
 #include "ChessClock.h"  // Add chess clock
+#include "Services/SoundManager.h"  // Add sound manager
 #include <string>
 #include <vector>
 #include <utility>
@@ -60,6 +61,13 @@ private:
     
     // Chess Clock System
     ChessClock chessClock;
+    
+    // Sound System
+    SoundManager soundManager;
+    
+    // Check state tracking for sound triggers
+    bool whiteWasInCheck;
+    bool blackWasInCheck;
 
 public:
     GameController();
@@ -138,6 +146,10 @@ public:
     // Chess Clock methods
     ChessClock& getChessClock() { return chessClock; }
     const ChessClock& getChessClock() const { return chessClock; }
+    
+    // Sound Manager methods
+    SoundManager& getSoundManager() { return soundManager; }
+    const SoundManager& getSoundManager() const { return soundManager; }
 
 private:
     void calculateLegalMoves(int row, int col);

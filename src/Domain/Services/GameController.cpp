@@ -20,10 +20,15 @@ GameController::GameController()
       currentEndReason(GameEndReason::NONE),
       aiEnabled(false), aiColor("black"), aiThinking(false), aiThinkingTimer(0.0f),
       currentGameState(GameState::PLAYING),
-      pendingPromotionRow(-1), pendingPromotionCol(-1), pendingPromotionColor("") {
+      pendingPromotionRow(-1), pendingPromotionCol(-1), pendingPromotionColor(""),
+      whiteWasInCheck(false), blackWasInCheck(false) {
     
     // Initialiser le générateur aléatoire pour les délais IA
     srand(static_cast<unsigned int>(time(nullptr)));
+    
+    // Initialize sound system
+    std::string assetsPath = "C:/Users/abdel/OneDrive - uit.ac.ma/Bureau/M1-IAOC/Conception and Programing CPP/ChessMasterUIT-Project/ChessMasterUIT/assets/";
+    soundManager.loadSounds(assetsPath);
 }
 
 GameController::~GameController() {
@@ -180,6 +185,10 @@ void GameController::resetGame() {
     // Clear king danger status on reset
     chessBoard.clearKingDangerStatus();
     
+    // Reset check tracking flags
+    whiteWasInCheck = false;
+    blackWasInCheck = false;
+    
     // Reset chess clock and start white's clock
     chessClock.reset();
     chessClock.startWhiteClock();
@@ -195,9 +204,9 @@ void GameController::resetGame() {
 }
 
 void GameController::update(float deltaTime) {
-    // Update chess clock
+    // Update chess clock with sound support
     if (!gameEnded && currentGameState != GameState::PAWN_PROMOTION_PENDING) {
-        chessClock.update(deltaTime);
+        chessClock.update(deltaTime, &soundManager);
         
         // Check for timeout
         if (chessClock.isWhiteTimeOut()) {
@@ -206,6 +215,10 @@ void GameController::update(float deltaTime) {
             currentEndReason = GameEndReason::TIMEOUT;
             gameEnded = true;
             chessClock.pauseAll();
+            
+            // Play game over sound for timeout
+            soundManager.playGameOver();
+            
             handleGameEnd(player2Name, player1Name);
             return;
         }
@@ -216,6 +229,10 @@ void GameController::update(float deltaTime) {
             currentEndReason = GameEndReason::TIMEOUT;
             gameEnded = true;
             chessClock.pauseAll();
+            
+            // Play game over sound for timeout
+            soundManager.playGameOver();
+            
             handleGameEnd(player1Name, player2Name);
             return;
         }
@@ -275,6 +292,38 @@ bool GameController::selectPiece(int row, int col) {
     std::string currentPlayerColor = whiteTurn ? "white" : "black";
     
     if (pieceSelected) {
+        // CHECK IF USER IS RESELECTING A DIFFERENT PIECE (before checking legal moves)
+        if (piece && piece->color == currentPlayerColor) {
+            // User clicked on another piece of their color - switch selection
+            if (row != selectedPieceRow || col != selectedPieceCol) {
+                std::cout << "[Selection] Switching selection to " << piece->type 
+                          << " at (" << row << "," << col << ")" << std::endl;
+                
+                // Clear previous selection
+                clearLegalMoves();
+                
+                // Select new piece
+                selectedPieceRow = row;
+                selectedPieceCol = col;
+                pieceSelected = true;
+                
+                // Calculate legal moves for new piece
+                calculateLegalMoves(row, col);
+                
+                std::cout << "[Selection] " << currentPlayerColor << " selected " << piece->type 
+                          << " at (" << row << "," << col << ")" << std::endl;
+                return false;
+            } else {
+                // User clicked on the same piece - deselect it
+                std::cout << "[Selection] Deselecting piece at (" << row << "," << col << ")" << std::endl;
+                pieceSelected = false;
+                selectedPieceRow = -1;
+                selectedPieceCol = -1;
+                clearLegalMoves();
+                return false;
+            }
+        }
+        
         // Vérifier si c'est un mouvement légal
         bool isLegalMove = false;
         for (const auto& move : legalMoves) {
@@ -345,6 +394,9 @@ bool GameController::selectPiece(int row, int col) {
                           << ") → (" << row << "," << col << ")"
                           << " [captured: " << moveToValidate.capturedType << "]"
                           << std::endl;
+                
+                // Play move sound
+                soundManager.playMove();
                 
                 whiteTurn = !whiteTurn;
                 moveCount++;
@@ -544,7 +596,25 @@ std::string GameController::getGameResultDescription() const {
 void GameController::updateKingDangerStatus() {
     if (!moveValidator) return;
     
-    // Update danger status for both kings
+    // Check current check status for both kings
+    bool whiteInCheck = moveValidator->isInCheck("white");
+    bool blackInCheck = moveValidator->isInCheck("black");
+    
+    // Detect WHITE king entering check (state transition)
+    if (whiteInCheck && !whiteWasInCheck) {
+        std::cout << "[GameController] WHITE king ENTERED check - playing check sound" << std::endl;
+        soundManager.playCheck();
+    }
+    whiteWasInCheck = whiteInCheck;
+    
+    // Detect BLACK king entering check (state transition)
+    if (blackInCheck && !blackWasInCheck) {
+        std::cout << "[GameController] BLACK king ENTERED check - playing check sound" << std::endl;
+        soundManager.playCheck();
+    }
+    blackWasInCheck = blackInCheck;
+    
+    // Update danger status for visual highlighting
     chessBoard.updateKingDangerStatus("white", moveValidator.get());
     chessBoard.updateKingDangerStatus("black", moveValidator.get());
 }
@@ -560,6 +630,9 @@ void GameController::evaluateGameEnd() {
         currentEndReason = gameEndEvaluator->getEndReason();
         gameEnded = true;
         chessClock.pauseAll();
+        
+        // Play game over sound
+        soundManager.playGameOver();
         
         std::cout << "[GameController] Game ended: " << gameEndEvaluator->getResultDescription() << std::endl;
         
@@ -641,6 +714,9 @@ void GameController::executeAIMove(const Move& move) {
     if (chessBoard.movePiece(move.fromRow, move.fromCol, move.toRow, move.toCol)) {
         std::cout << "[AI] Move executed successfully: (" << move.fromRow << "," << move.fromCol 
                   << ") -> (" << move.toRow << "," << move.toCol << ")" << std::endl;
+        
+        // Play move sound for AI moves
+        soundManager.playMove();
         
         whiteTurn = !whiteTurn;
         moveCount++;

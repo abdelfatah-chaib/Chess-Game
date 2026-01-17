@@ -1,12 +1,16 @@
 #pragma once
 #include <string>
 
+// Forward declaration
+class SoundManager;
+
 // Player clock structure
 struct PlayerClock {
     float remainingSeconds;  // Time remaining in seconds
     bool isRunning;          // Is this clock currently running?
+    bool timeWarningPlayed;  // Has time warning been played for this player?
     
-    PlayerClock() : remainingSeconds(600.0f), isRunning(false) {}
+    PlayerClock() : remainingSeconds(600.0f), isRunning(false), timeWarningPlayed(false) {}
     
     // Get formatted time as MM:SS
     std::string getFormattedTime() const;
@@ -39,6 +43,7 @@ public:
     
     // Update (call every frame with delta time)
     void update(float deltaTime);
+    void update(float deltaTime, SoundManager* soundManager);  // Overload with sound support
     
     // Getters
     const PlayerClock& getWhiteClock() const { return whiteClock; }

@@ -220,6 +220,7 @@
       <Filter>src\Domain\Services</Filter>
     </ClCompile>
     <ClCompile Include="src\Domain\Services\ChessClock.cpp" />
+    <ClCompile Include="src\Domain\Services\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <!-- Entities Headers -->
@@ -382,6 +383,7 @@
     <ClInclude Include="include\GUI\PromotionDialog.h" />
     <ClInclude Include="include\Services\GameState.h" />
     <ClInclude Include="include\Services\ChessClock.h" />
+    <ClInclude Include="include\Services\SoundManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -688,5 +690,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="CMakeLists.txt" />
+    <Text Include="COMMIT_MESSAGE.txt" />
   </ItemGroup>
 </Project>
