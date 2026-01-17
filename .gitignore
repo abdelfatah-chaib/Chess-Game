@@ -147,3 +147,4 @@ README_SIMPLE.txt
 # Scripts
 *.ps1
 *.backup
+/README.md
